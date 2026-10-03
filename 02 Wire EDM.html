@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>02 / Precision - Wire EDM</title>
+<style>
+
+@page{ size: 297mm 210mm; margin: 0; }
+
+/* =====================================================================
+   PORTFOLIO MASTER TEMPLATE - v1
+   Page 02: Wire EDM - Setup & Clocking
+   Fixed visual system inherited from Page 01.
+   ===================================================================== */
+
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Light.ttf');    font-weight:300; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Regular.ttf');  font-weight:400; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Medium.ttf');   font-weight:500; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-SemiBold.ttf'); font-weight:600; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Bold.ttf');     font-weight:700; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-Regular.ttf');  font-weight:400; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-Medium.ttf');   font-weight:500; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-SemiBold.ttf'); font-weight:600; }
+
+:root{
+  --bg:        #FAFAF7;
+  --ink:       #1B1B1E;
+  --ink-soft:  #58585E;
+  --ink-faint: #97969C;
+  --line:      #DBD9D2;
+  --line-strong:#C7C4BB;
+  --accent:    #AD5A2B;
+  --accent-soft:#D9C3B4;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html,body{
+  width:297mm; height:210mm;
+  background:var(--bg);
+  font-family:'Inter', Arial, sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  width:297mm; height:210mm;
+  padding:13mm 15mm 10mm 15mm;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ---------------------------------------------------------------------
+   HEADER - same structure and proportions as Page 01
+--------------------------------------------------------------------- */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding-bottom:5mm;
+}
+
+.header-left{ display:flex; align-items:flex-end; }
+
+.proj-number{
+  font-family:'Plex Mono';
+  font-weight:500;
+  font-size:30px;
+  color:var(--accent);
+  line-height:1;
+  padding-right:5mm;
+  margin-right:5mm;
+  border-right:1px solid var(--line-strong);
+}
+
+.title-stack{ line-height:1.1; }
+
+.title-stack .kicker{
+  font-family:'Plex Mono';
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--ink-faint);
+  font-weight:500;
+  margin-bottom:2mm;
+  display:block;
+}
+
+.title-stack h1{
+  font-size:27px;
+  font-weight:600;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+  margin-bottom:1.8mm;
+}
+
+.title-stack .subtitle{
+  font-size:12.5px;
+  font-weight:400;
+  color:var(--ink-soft);
+  letter-spacing:0.1px;
+}
+
+.meta-strip{ display:flex; align-items:flex-end; }
+
+.meta-field{
+  padding:0 5.5mm;
+  border-left:1px solid var(--line);
+  text-align:left;
+}
+
+.meta-field:last-child{ padding-right:0; }
+
+.meta-field .meta-label{
+  font-family:'Plex Mono';
+  font-size:8.5px;
+  letter-spacing:1.5px;
+  color:var(--ink-faint);
+  font-weight:500;
+  display:block;
+  margin-bottom:1.6mm;
+}
+
+.meta-field .meta-value{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.2px;
+  white-space:nowrap;
+}
+
+.rule{ height:1px; background:var(--line-strong); width:100%; }
+
+.rule.accent-tick{ position:relative; }
+
+.rule.accent-tick::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:-1px;
+  width:14mm;
+  height:2px;
+  background:var(--accent);
+}
+
+/* ---------------------------------------------------------------------
+   PHOTOGRAPH GRID
+   Content variation for Page 02:
+   - Hero: actual Wire EDM setup with DTI indicators
+   - Supporting: component being prepared for machining
+   Only two engineering photographs are supplied. Both are displayed in full;
+   the frame provides neutral space around an image where its aspect ratio
+   differs from the available page frame.
+--------------------------------------------------------------------- */
+.photo-grid{
+  display:flex;
+  gap:6mm;
+  margin-top:6mm;
+  flex:1;
+  min-height:0;
+}
+
+.photo-col{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.photo-col.hero{ flex:1.55; }
+
+.photo-col.support{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.support .photo-row{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.frame{
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  background:#EFEDE8;
+}
+
+.frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.caption{
+  display:flex;
+  align-items:baseline;
+  gap:2.5mm;
+  padding-top:2.2mm;
+}
+
+.caption .cap-num{
+  font-family:'Plex Mono';
+  font-size:10px;
+  font-weight:600;
+  color:var(--accent);
+  flex-shrink:0;
+}
+
+.caption .cap-text{
+  font-size:10.5px;
+  color:var(--ink-soft);
+  letter-spacing:0.1px;
+}
+
+.caption .cap-text b{
+  color:var(--ink);
+  font-weight:600;
+}
+
+/* ---------------------------------------------------------------------
+   PROCESS EXPOSURE - fixed horizontal sequence
+--------------------------------------------------------------------- */
+.section{ margin-top:6mm; }
+
+.section-label{
+  font-family:'Plex Mono';
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:2px;
+  color:var(--ink-faint);
+  margin-bottom:3mm;
+  display:block;
+}
+
+.process-seq{
+  display:flex;
+  align-items:center;
+  flex-wrap:nowrap;
+}
+
+.process-step{
+  display:flex;
+  align-items:baseline;
+  white-space:nowrap;
+}
+
+.process-step .step-num{
+  font-family:'Plex Mono';
+  font-size:10px;
+  font-weight:600;
+  color:var(--accent);
+  margin-right:2mm;
+}
+
+.process-step .step-label{
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:0.1px;
+}
+
+.process-arrow{
+  color:var(--line-strong);
+  margin:0 4mm;
+  font-size:12px;
+  font-weight:400;
+}
+
+/* ---------------------------------------------------------------------
+   TECHNICAL EXPOSURE - fixed keyword strip
+--------------------------------------------------------------------- */
+.tech-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  row-gap:2mm;
+}
+
+.tech-item{
+  font-size:11.5px;
+  color:var(--ink-soft);
+  font-weight:400;
+  padding-right:4mm;
+  margin-right:4mm;
+  border-right:1px solid var(--line);
+}
+
+.tech-item:last-child{
+  border-right:none;
+  margin-right:0;
+  padding-right:0;
+}
+
+.tech-item.primary{
+  color:var(--ink);
+  font-weight:600;
+}
+
+/* ---------------------------------------------------------------------
+   INSPECTION TOOLS USED - compact extension of Technical Exposure
+--------------------------------------------------------------------- */
+.inspection-tools{
+  margin-top:3.5mm;
+  padding-top:2.5mm;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  min-height:7mm;
+}
+
+.inspection-tools .inspection-label{
+  font-family:'Plex Mono';
+  font-size:8.5px;
+  letter-spacing:1.6px;
+  color:var(--ink-faint);
+  font-weight:500;
+  margin-right:5mm;
+  white-space:nowrap;
+}
+
+.inspection-tools .inspection-item{
+  font-size:11.5px;
+  color:var(--ink-soft);
+  font-weight:400;
+  padding:0 4mm;
+  border-left:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.inspection-tools .inspection-item:first-of-type{
+  color:var(--ink);
+  font-weight:500;
+}
+
+/* ---------------------------------------------------------------------
+   FOOTER - same structure as Page 01
+--------------------------------------------------------------------- */
+.footer{
+  margin-top:6mm;
+  padding-top:3mm;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.footer .foot-left{
+  font-family:'Plex Mono';
+  font-size:8px;
+  letter-spacing:1.8px;
+  color:var(--ink-faint);
+  font-weight:500;
+}
+
+.footer .foot-right{
+  font-family:'Plex Mono';
+  font-size:8px;
+  letter-spacing:1.8px;
+  color:var(--ink-faint);
+  font-weight:500;
+}
+
+.footer .foot-right b{ color:var(--ink-soft); }
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- HEADER - Page 02 -->
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">02</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE MANUFACTURING PORTFOLIO</span>
+        <h1>Precision - Wire EDM</h1>
+        <div class="subtitle">Aerospace Flap Component - Slot</div>
+      </div>
+    </div>
+
+    <div class="meta-strip">
+      <div class="meta-field">
+        <span class="meta-label">ROLE</span>
+        <span class="meta-value">EDM MACHINIST</span>
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">PROCESS</span>
+        <span class="meta-value">WIRE EDM</span>
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">MACHINE</span>
+        <span class="meta-value">AGIE CHARMILLES</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule accent-tick"></div>
+
+  <!--
+    PHOTOGRAPH GRID - Page 02 has two supplied photographs.
+
+    Hero:
+      assets/wire-edm-setup-dti.jpg
+      Actual Wire EDM setup with the component mounted and DTI indicators visible.
+
+    Supporting:
+      assets/flap-component.jpg
+      Separate view of the aerospace flap component being prepared for machining.
+
+    Both supplied photographs use object-fit: contain so the complete original
+    image remains visible. No photograph is cropped or duplicated.
+  -->
+  <div class="photo-grid">
+
+    <div class="photo-col hero">
+      <div class="frame">
+        <img src="assets/wire-edm-setup-dti.jpg"
+             alt="Wire EDM setup with aerospace flap component and DTI indicators">
+      </div>
+
+      <div class="caption">
+        <span class="cap-num">01</span>
+        <span class="cap-text"><b>EDM SETUP</b> - Component mounted for DTI clocking and axis alignment</span>
+      </div>
+    </div>
+
+    <div class="photo-col support">
+      <div class="photo-row">
+        <div class="frame">
+          <img src="assets/flap-component.jpg"
+               alt="Aerospace flap component prepared for Wire EDM machining">
+        </div>
+
+        <div class="caption">
+          <span class="cap-num">02</span>
+          <span class="cap-text"><b>COMPONENT</b> - Final Result (Slot Removed)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROCESS EXPOSURE -->
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+
+    <div class="process-seq">
+      <div class="process-step">
+        <span class="step-num">01</span>
+        <span class="step-label">Fixture Loading</span>
+      </div>
+
+      <span class="process-arrow">&#8594;</span>
+
+      <div class="process-step">
+        <span class="step-num">02</span>
+        <span class="step-label">Component Securing</span>
+      </div>
+
+      <span class="process-arrow">&#8594;</span>
+
+      <div class="process-step">
+        <span class="step-num">03</span>
+        <span class="step-label">DTI Clocking</span>
+      </div>
+
+      <span class="process-arrow">&#8594;</span>
+
+      <div class="process-step">
+        <span class="step-num">04</span>
+        <span class="step-label">Axis Alignment</span>
+      </div>
+
+      <span class="process-arrow">&#8594;</span>
+
+      <div class="process-step">
+        <span class="step-num">05</span>
+        <span class="step-label">Datum Alignment</span>
+      </div>
+
+      <span class="process-arrow">&#8594;</span>
+
+      <div class="process-step">
+        <span class="step-num">06</span>
+        <span class="step-label">Slot Cutting Prep</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECHNICAL EXPOSURE -->
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+
+    <div class="tech-row">
+      <span class="tech-item primary">Wire EDM</span>
+      <span class="tech-item">Precision Fixturing</span>
+      <span class="tech-item">DTI Clocking</span>
+      <span class="tech-item">Axis Alignment</span>
+      <span class="tech-item">Datum Alignment</span>
+      <span class="tech-item">Machine Setup</span>
+      <span class="tech-item">SOP Compliance</span>
+      <span class="tech-item">Precision Slot Cutting</span>
+    </div>
+
+    <!-- Compact inspection-tools extension: tool name only. -->
+    <div class="inspection-tools">
+      <span class="inspection-label">INSPECTION TOOLS USED</span>
+      <span class="inspection-item">Vernier Caliper</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="rule"></div>
+
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>02</b> &nbsp;/&nbsp; EDM&ndash;SETUP&ndash;02</span>
+  </div>
+
+</div>
+</body>
+</html>

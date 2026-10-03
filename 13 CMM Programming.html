@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>10 / CMM Programming - Component Geometry & Inspection Range</title>
+<style>
+/* IMAGE VISIBILITY REVISION v2: taller photo area + full-image containment to prevent cropping */
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--ink-soft:#58585E;--ink-faint:#97969C;--line:#DBD9D2;--line-strong:#C7C4BB;--accent:#AD5A2B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:297mm;height:210mm;background:var(--bg);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:12mm 15mm 9mm;display:flex;flex-direction:column;position:relative}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:4.5mm}
+.header-left{display:flex;align-items:flex-end;min-width:0}.proj-number{font-family:'Plex Mono';font-weight:500;font-size:30px;color:var(--accent);line-height:1;padding-right:5mm;margin-right:5mm;border-right:1px solid var(--line-strong)}
+.title-stack{line-height:1.08}.title-stack .kicker{font-family:'Plex Mono';font-size:9px;letter-spacing:2px;color:var(--ink-faint);font-weight:500;margin-bottom:1.7mm;display:block}.title-stack h1{font-size:22px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-bottom:1.5mm}.title-stack .subtitle{font-size:11.5px;font-weight:400;color:var(--ink-soft);letter-spacing:.1px}
+.meta-strip{display:flex;align-items:flex-end}.meta-field{padding:0 5mm;border-left:1px solid var(--line);text-align:left}.meta-field:last-child{padding-right:0}.meta-field .meta-label{font-family:'Plex Mono';font-size:8.2px;letter-spacing:1.4px;color:var(--ink-faint);font-weight:500;display:block;margin-bottom:1.4mm}.meta-field .meta-value{font-size:12.7px;font-weight:600;letter-spacing:.15px;white-space:nowrap}
+.rule{height:1px;background:var(--line-strong);width:100%}.rule.accent-tick{position:relative}.rule.accent-tick::before{content:'';position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+.photo-grid{display:flex;gap:5mm;margin-top:4mm;height:90mm;flex:none;min-height:90mm}.photo-col{display:flex;flex-direction:column;min-height:0}.photo-col.hero{flex:1.5}.photo-col.support{flex:1;gap:3mm;display:flex;flex-direction:column;min-height:0}.support .photo-row{flex:1;display:flex;flex-direction:column;min-height:0}
+.frame{position:relative;flex:1;min-height:0;overflow:hidden;background:#EFEDE8;display:flex;align-items:center;justify-content:center}.frame img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block}.frame.hero-frame img{object-position:center center;max-width:100%;max-height:100%;}.caption{display:flex;align-items:baseline;gap:1.7mm;padding-top:1mm}.caption .cap-num{font-family:'Plex Mono';font-size:8.8px;font-weight:600;color:var(--accent);flex-shrink:0}.caption .cap-text{font-size:9px;color:var(--ink-soft);letter-spacing:.05px;line-height:1.12}.caption .cap-text b{color:var(--ink);font-weight:600}
+.callout{position:absolute;display:flex;align-items:center;gap:.8mm;font-family:'Plex Mono';font-size:5.6px;letter-spacing:.45px;color:var(--ink);background:rgba(250,250,247,.90);padding:.55mm .8mm;line-height:1.02}.callout .n{color:var(--accent);font-weight:600;margin-right:.5mm}.callout.dark{background:rgba(27,27,30,.86);color:#FAFAF7}.a1{left:1.8%;top:5%}.a2{right:1.8%;top:18%}.a3{left:1.8%;bottom:12%}.a4{right:1.8%;bottom:5%}.b5{left:2%;top:8%}.b6{right:2%;top:39%}.b7{left:2%;bottom:8%}.c8{left:2%;top:9%}.c9{right:2%;top:39%}.c10{left:2%;bottom:8%}.c11{right:2%;bottom:8%}
+.range-strip{margin-top:3.2mm;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.1mm 0;display:flex;align-items:center;justify-content:space-between}.range-item{display:flex;align-items:baseline;gap:1.7mm;white-space:nowrap}.range-num{font-family:'Plex Mono';font-size:8px;color:var(--accent);font-weight:600}.range-label{font-size:9.2px;font-weight:600;letter-spacing:.25px}.range-arrow{font-family:'Plex Mono';font-size:10px;color:var(--line-strong)}
+.context{margin-top:3.2mm;display:grid;grid-template-columns:1.55fr 1fr;gap:7mm;align-items:start}.context-label,.section-label{font-family:'Plex Mono';font-size:7.8px;font-weight:500;letter-spacing:1.8px;color:var(--ink-faint);margin-bottom:1.6mm;display:block}.context-copy{font-size:8.55px;line-height:1.28;color:var(--ink-soft)}.context-copy b{color:var(--ink);font-weight:600}.context-side{border-left:1px solid var(--line);padding-left:4.5mm}.equation{font-family:'Plex Mono';font-size:7.3px;line-height:1.45;letter-spacing:.55px;color:var(--ink-soft);margin-top:1.3mm}.equation b{color:var(--ink);font-weight:600}
+.section{margin-top:3.2mm}.process-seq{display:flex;align-items:center;flex-wrap:nowrap}.process-step{display:flex;align-items:baseline;white-space:nowrap}.process-step .step-num{font-family:'Plex Mono';font-size:9px;font-weight:600;color:var(--accent);margin-right:1.6mm}.process-step .step-label{font-size:9.4px;font-weight:500;letter-spacing:.05px}.process-arrow{color:var(--line-strong);margin:0 2.4mm;font-size:10px;font-weight:400}
+.tech-row{display:flex;flex-wrap:nowrap;align-items:baseline}.tech-item{font-size:8.8px;color:var(--ink-soft);font-weight:400;padding-right:2.7mm;margin-right:2.7mm;border-right:1px solid var(--line);white-space:nowrap}.tech-item:last-child{border-right:none;margin-right:0;padding-right:0}.tech-item.primary{color:var(--ink);font-weight:600}
+.footer{margin-top:auto;padding-top:2.7mm;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line-strong)}.footer .foot-left,.footer .foot-right{font-family:'Plex Mono';font-size:7.6px;letter-spacing:1.7px;color:var(--ink-faint);font-weight:500}.footer .foot-right b{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">10</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">Three Classes of Aerospace Grade CMM Programmable Parts</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+      <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span></div>
+      <div class="meta-field"><span class="meta-label">SOFTWARE</span><span class="meta-value">ABERLINK 3D</span></div>
+      <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">COMPONENT CATEGORY</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="photo-grid">
+    <div class="photo-col hero">
+      <div class="frame hero-frame">
+        <img src="assets/cmm-range-01-large-annular.jpg" alt="Large annular component with cylindrical, planar and hole-pattern geometry">
+        
+      </div>
+      <div class="caption"><span class="cap-num">01</span><span class="cap-text"><b>LARGE / COMPLEX - ANNULAR COMPONENT</b> - Cylindrical, planar and hole-pattern features requiring a geometry-driven measurement strategy</span></div>
+    </div>
+
+    <div class="photo-col support">
+      <div class="photo-row">
+        <div class="frame">
+          <img src="assets/cmm-range-02-rotational.jpg" alt="Medium rotational component with circular flange, central boss and hole pattern">
+          
+        </div>
+        <div class="caption"><span class="cap-num">02</span><span class="cap-text"><b>MEDIUM - ROTATIONAL COMPONENT</b> - Circular, cylindrical and hole-pattern features for feature-based inspection</span></div>
+      </div>
+      <div class="photo-row">
+        <div class="frame">
+          <img src="assets/cmm-range-03-feature-dense.jpg" alt="Compact feature-dense component with intersecting planar and cylindrical geometry">
+          
+        </div>
+        <div class="caption"><span class="cap-num">03</span><span class="cap-text"><b>SMALL / FEATURE-DENSE - COMPACT COMPONENT</b> - Multiple orientations and restricted access can drive programming complexity</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="range-strip">
+    <div class="range-item"><span class="range-num">01</span><span class="range-label">LARGE / COMPLEX</span></div><span class="range-arrow">→</span>
+    <div class="range-item"><span class="range-num">02</span><span class="range-label">MEDIUM / ROTATIONAL</span></div><span class="range-arrow">→</span>
+    <div class="range-item"><span class="range-num">03</span><span class="range-label">SMALL / FEATURE-DENSE</span></div>
+    <div class="range-item"><span class="range-num">RANGE</span><span class="range-label">SIZE ≠ PROGRAMMING COMPLEXITY</span></div>
+  </div>
+
+  <div class="context">
+    <div class="context-block">
+      <span class="context-label">RANGE OF INSPECTION GEOMETRY</span>
+      <div class="context-copy"><b>CMM programming required the inspection strategy to be adapted to the component's geometry, feature density and accessibility.</b> Across large annular components, rotational parts and compact feature-dense components, programming involved establishing appropriate datum references, selecting measurable features, planning probe approaches and sequencing the inspection to obtain reliable dimensional and geometric results.</div>
+    </div>
+    <div class="context-block context-side">
+      <span class="context-label">FEATURE-BASED INSPECTION</span>
+      <div class="context-copy">The program was structured around measurable geometric features rather than simply probe movements: <b>planes, cylinders, circles, holes, bores, diameters, annular surfaces, feature centres and feature-to-feature relationships.</b> Their evaluation was driven by the drawing and applicable GD&amp;T requirements; the photographs show representative component geometries, not a claim that every listed feature was measured on every part.</div>
+      <div class="equation"><b>GEOMETRY</b> + <b>DATUM STRUCTURE</b> + <b>FEATURE DENSITY</b> + <b>ACCESSIBILITY</b> + <b>PROBE STRATEGY</b></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">Drawing Interpretation</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">Datum Strategy</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Feature Selection</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Probe Planning</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">CMM Programming</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">Feature Evaluation</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">07</span><span class="step-label">GD&amp;T Verification</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Programming</span>
+      <span class="tech-item">Feature-Based Inspection</span>
+      <span class="tech-item">Datum Reference Frames</span>
+      <span class="tech-item">Cylindrical Features</span>
+      <span class="tech-item">Hole Patterns</span>
+      <span class="tech-item">Probe Accessibility</span>
+      <span class="tech-item">Measurement Strategy</span>
+      <span class="tech-item">GD&amp;T Verification</span>
+      <span class="tech-item">Feature Evaluation</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>10</b> &nbsp;/&nbsp; CMM&ndash;RANGE&ndash;10</span>
+  </div>
+</div>
+</body>
+</html>

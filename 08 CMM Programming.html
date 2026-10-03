@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>05 / CMM Programming - Repeatable Part Fixturing &amp; Alignment</title>
+<style>
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--soft:#58585E;--faint:#97969C;--line:#DBD9D2;--strong:#C7C4BB;--accent:#AD5A2B;--paper:#F1F0EC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:297mm;height:210mm;background:var(--bg);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:11mm 15mm 8mm;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:4mm}
+.header-left{display:flex;align-items:flex-end}
+.proj-number{font-family:'Plex Mono';font-weight:500;font-size:30px;color:var(--accent);line-height:1;padding-right:5mm;margin-right:5mm;border-right:1px solid var(--strong)}
+.title-stack{line-height:1.04;max-width:132mm}
+.kicker{font-family:'Plex Mono';font-size:9px;letter-spacing:2px;color:var(--faint);font-weight:500;margin-bottom:1.7mm;display:block}
+.title-stack h1{font-size:23px;font-weight:600;letter-spacing:.25px;text-transform:uppercase;margin-bottom:1.5mm}
+.subtitle{font-size:12px;color:var(--soft);letter-spacing:.05px}
+.meta-strip{display:flex;align-items:flex-end}
+.meta-field{padding:0 4.2mm;border-left:1px solid var(--line);text-align:left}
+.meta-field:last-child{padding-right:0}
+.meta-label{font-family:'Plex Mono';font-size:8px;letter-spacing:1.35px;color:var(--faint);font-weight:500;display:block;margin-bottom:1.4mm}
+.meta-value{font-size:11.7px;font-weight:600;letter-spacing:.12px;white-space:nowrap}
+.rule{height:1px;background:var(--strong);width:100%}
+.accent-tick{position:relative}.accent-tick:before{content:'';position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+
+/* PRIMARY PHOTO EVIDENCE — image first, captions below */
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:5mm;height:73mm;min-height:73mm;flex-shrink:0}
+.photo-card{display:flex;flex-direction:column;min-width:0;min-height:0}
+.photo-frame{height:63mm;background:#EFEDE8;overflow:hidden;position:relative}
+.photo-frame img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.photo-caption{display:flex;align-items:flex-start;gap:2.5mm;padding-top:2mm}
+.cap-num{font-family:'Plex Mono';font-size:10px;font-weight:600;color:var(--accent);flex-shrink:0}
+.cap-text{font-size:9.6px;color:var(--soft);line-height:1.25}
+.cap-text b{color:var(--ink);font-weight:600}
+
+/* PHOTO CALLOUTS */
+.marker{position:absolute;width:5mm;height:5mm;border:1.2px solid var(--accent);border-radius:50%;background:var(--bg);color:var(--accent);font-family:'Plex Mono';font-size:7px;font-weight:600;display:flex;align-items:center;justify-content:center;z-index:2}
+.leader{position:absolute;height:1px;background:var(--accent);transform-origin:left center;z-index:1}
+.marker-label{position:absolute;font-family:'Plex Mono';font-size:6.6px;letter-spacing:.7px;color:var(--accent);background:rgba(250,250,247,.92);padding:.5mm 1mm;z-index:3;white-space:nowrap}
+
+/* SETUP LOGIC */
+.setup-story{margin-top:2.8mm;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.8mm 0;display:grid;grid-template-columns:1.5fr .82fr;gap:5mm;min-height:26mm}
+.setup-left{min-width:0}
+.section-label{font-family:'Plex Mono';font-size:8.8px;font-weight:600;letter-spacing:1.8px;color:var(--accent);margin-bottom:1.7mm;display:block}
+.setup-flow{display:flex;align-items:center;gap:1.5mm}
+.setup-node{border:1px solid var(--strong);min-height:11.5mm;flex:1;padding:1mm 1.1mm;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.setup-node .node-k{font-family:'Plex Mono';font-size:6px;letter-spacing:.65px;color:var(--faint);margin-bottom:.6mm}
+.setup-node .node-t{font-size:7.8px;line-height:1.08;font-weight:600;text-align:center;max-width:100%;overflow-wrap:anywhere}
+.setup-arrow{font-size:11px;color:var(--accent);flex:0 0 auto}
+.setup-note{font-size:8px;line-height:1.22;color:var(--soft);margin-top:1.5mm}
+.setup-note b{color:var(--ink)}
+.setup-copy{border-left:1px solid var(--line);padding-left:4.5mm;font-size:8.1px;line-height:1.27;color:var(--soft)}
+.setup-copy p+p{margin-top:1.2mm}
+.setup-copy b{color:var(--ink);font-weight:600}
+.logic-tag{font-family:'Plex Mono';font-size:7.2px;letter-spacing:1px;color:var(--accent);margin-bottom:1.2mm}
+
+/* ENGINEERING CHALLENGES */
+.challenge-grid{margin-top:2mm;display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.challenge{border-top:1px solid var(--line);padding-top:1.4mm}
+.challenge h3{font-family:'Plex Mono';font-size:7.7px;letter-spacing:1px;color:var(--accent);margin-bottom:.9mm}
+.challenge p{font-size:7.8px;line-height:1.18;color:var(--soft)}
+.challenge p b{color:var(--ink);font-weight:600}
+
+/* METROLOGY CONTEXT STRIP */
+.context-strip{margin-top:1.7mm;border-top:1.5px solid var(--accent);padding:1.4mm 0 1mm;display:grid;grid-template-columns:47mm minmax(0,1fr);gap:4.5mm;align-items:start}
+.context-title{font-family:'Plex Mono';font-size:9.6px;line-height:1.05;letter-spacing:1.35px;font-weight:600;color:var(--accent)}
+.context-copy{font-size:8px;line-height:1.2;color:var(--soft)}
+.context-copy b{color:var(--ink)}
+.context-points{font-family:'Plex Mono';font-size:7.1px;letter-spacing:.6px;color:var(--soft);margin-top:1mm}
+
+/* PROCESS + EXPOSURE */
+.process-section{margin-top:1.3mm}
+.process-seq{display:flex;align-items:center;flex-wrap:nowrap}
+.process-step{display:flex;align-items:baseline;white-space:nowrap}
+.step-num{font-family:'Plex Mono';font-size:9.5px;font-weight:600;color:var(--accent);margin-right:1.6mm}
+.step-label{font-size:8.9px;font-weight:500}
+.process-arrow{color:var(--strong);margin:0 2mm;font-size:11px}
+.tech-section{margin-top:1.2mm}
+.tech-row{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:1.2mm}
+.tech-item{font-size:8.4px;color:var(--soft);font-weight:400;padding-right:1.7mm;margin-right:1.7mm;border-right:1px solid var(--line)}
+.tech-item:last-child{border-right:none;margin-right:0;padding-right:0}
+.tech-item.primary{color:var(--ink);font-weight:600}
+.footer{margin-top:auto;padding-top:2.3mm;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line)}
+.foot-left,.foot-right{font-family:'Plex Mono';font-size:7.8px;letter-spacing:1.7px;color:var(--faint);font-weight:500}
+.foot-right b{color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">05</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">Repeatable Part Fixturing &amp; Alignment</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+      <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span></div>
+      <div class="meta-field"><span class="meta-label">SETUP</span><span class="meta-value">REPEATABLE FIXTURING</span></div>
+      <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">PART ALIGNMENT</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="photo-grid">
+    <div class="photo-card">
+      <div class="photo-frame">
+        <img src="assets/fixture-top-view.jpg" alt="CMM setup showing component located with pins and gauge block">
+        
+      </div>
+      <div class="photo-caption"><span class="cap-num">01</span><span class="cap-text"><b>LOCATING / CLOCKING PINS</b> - Existing holes are used with locating elements to provide repeatable physical orientation before the CMM routine begins.</span></div>
+    </div>
+
+    <div class="photo-card">
+      <div class="photo-frame">
+        <img src="assets/fixture-side-view.jpg" alt="CMM workholding setup showing Vice and locating arrangement">
+      
+      </div>
+      <div class="photo-caption"><span class="cap-num">02</span><span class="cap-text"><b>REPEATABLE SETUP</b> - Gauge-block reference, locating pins and controlled clamping work together to reproduce the intended loading condition.</span></div>
+    </div>
+  </div>
+
+  <div class="setup-story">
+    <div class="setup-left">
+      <span class="section-label">REPEATABLE SETUP / PHYSICAL LOCATION</span>
+      <div class="setup-flow">
+        <div class="setup-node"><span class="node-k">POSITIONAL REFERENCE</span><span class="node-t">GAUGE BLOCK</span></div>
+        <span class="setup-arrow">→</span>
+        <div class="setup-node"><span class="node-k">ROTATIONAL REFERENCE</span><span class="node-t">LOCATING PINS</span></div>
+        <span class="setup-arrow">→</span>
+        <div class="setup-node"><span class="node-k">SECURE WORKHOLDING</span><span class="node-t">Vice</span></div>
+        <span class="setup-arrow">→</span>
+        <div class="setup-node"><span class="node-k">CONTROLLED LOADING</span><span class="node-t">REPEATABLE SETUP</span></div>
+      </div>
+      <div class="setup-note"><b>Physical workpiece location</b> is established by the setup arrangement; the CMM software coordinate-system alignment remains a separate inspection-programming step.</div>
+    </div>
+    <div class="setup-copy">
+      <div class="logic-tag">OPERATOR SETUP STANDARDISATION</div>
+      <p>The arrangement was incorporated into operator instructions so different operators could reproduce the same loading condition before running the inspection program.</p>
+      <p>The objective is <b>repeatability from one loading to the next</b>, reducing operator-dependent variation before measurement begins.</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge">
+      <h3>01 / REPEATABLE PART LOCATION</h3>
+      <p>Existing holes are used with <b>locating / clocking pins</b> to control the component's physical orientation during loading.</p>
+    </div>
+    <div class="challenge">
+      <h3>02 / GAUGE-BLOCK REFERENCE</h3>
+      <p>A <b>gauge block / slip gauge</b> provides a physical setup reference for reproducing the required relationship between the component feature and Vice edge.</p>
+    </div>
+    <div class="challenge">
+      <h3>03 / ROTATIONAL ALIGNMENT</h3>
+      <p><b>Gauge block → positional reference</b>; <b>locating pins → rotational reference</b>; <b>Vice → secure workholding</b>.</p>
+    </div>
+    <div class="challenge">
+      <h3>04 / OPERATOR STANDARDISATION</h3>
+      <p>Setup instructions translate the physical arrangement into a <b>repeatable loading condition</b> before the CMM program is run.</p>
+    </div>
+  </div>
+
+  <div class="context-strip">
+    <div class="context-title">CMM FIXTURING<br>METROLOGY CONTEXT</div>
+    <div class="context-copy">
+      Effective workholding balances <b>repeatability, stability, accessibility, minimal part distortion and probe clearance</b>. Metal locating elements can be appropriate when contact is controlled and the fit, contact surfaces and constraint strategy are suitable; clamping must avoid excessive force or unnecessary constraint that could deform the component.
+      <div class="context-points">REPEATABILITY &nbsp;|&nbsp; STABILITY &nbsp;|&nbsp; ACCESSIBILITY &nbsp;|&nbsp; MINIMAL DISTORTION &nbsp;|&nbsp; PROBE CLEARANCE</div>
+    </div>
+  </div>
+
+  <div class="process-section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">Part Loading</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">Gauge-Block Reference</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Pin Location</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Rotational Alignment</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">Vice Clamping</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">CMM Inspection</span></div>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Fixturing</span>
+      <span class="tech-item">Repeatable Workholding</span>
+      <span class="tech-item">Locating Pins</span>
+      <span class="tech-item">Clocking</span>
+      <span class="tech-item">Gauge Blocks</span>
+      <span class="tech-item">Slip Gauges</span>
+      <span class="tech-item">Datum Location</span>
+      <span class="tech-item">Rotational Alignment</span>
+      <span class="tech-item">Fixture Repeatability</span>
+      <span class="tech-item">Probe Accessibility</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>05</b> &nbsp;/&nbsp; CMM&ndash;FIXTURE&ndash;05</span>
+  </div>
+</div>
+</body>
+</html>

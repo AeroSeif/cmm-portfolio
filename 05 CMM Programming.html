@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>02 / CMM Programming - Offline CAD Programming</title>
+<style>
+
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+
+:root{
+  --bg:#FAFAF7;
+  --ink:#1B1B1E;
+  --soft:#58585E;
+  --faint:#97969C;
+  --line:#DBD9D2;
+  --strong:#C7C4BB;
+  --accent:#AD5A2B;
+  --screen:#151515;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  width:297mm;height:210mm;
+  background:var(--bg);
+  font-family:'Inter',Arial,sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  width:297mm;height:210mm;
+  padding:11mm 15mm 8mm;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding-bottom:4.5mm;
+  flex:none;
+}
+.header-left{display:flex;align-items:flex-end;min-width:0}
+.proj-number{
+  font-family:'Plex Mono';
+  font-weight:500;
+  font-size:30px;
+  color:var(--accent);
+  line-height:1;
+  padding-right:4.5mm;
+  margin-right:4.5mm;
+  border-right:1px solid var(--strong);
+}
+.title-stack{line-height:1.08;min-width:0}
+.title-stack .kicker{
+  font-family:'Plex Mono';
+  font-size:8.5px;
+  letter-spacing:1.8px;
+  color:var(--faint);
+  font-weight:500;
+  margin-bottom:1.7mm;
+  display:block;
+}
+.title-stack h1{
+  font-size:24px;
+  font-weight:600;
+  letter-spacing:.25px;
+  text-transform:uppercase;
+  margin-bottom:1.4mm;
+}
+.title-stack .subtitle{
+  font-size:12.4px;
+  font-weight:400;
+  color:var(--soft);
+  letter-spacing:.05px;
+}
+.meta-strip{display:flex;align-items:flex-end;flex:none}
+.meta-field{
+  padding:0 4.5mm;
+  border-left:1px solid var(--line);
+  text-align:left;
+}
+.meta-field:last-child{padding-right:0}
+.meta-field .meta-label{
+  font-family:'Plex Mono';
+  font-size:7.8px;
+  letter-spacing:1.35px;
+  color:var(--faint);
+  font-weight:500;
+  display:block;
+  margin-bottom:1.3mm;
+}
+.meta-field .meta-value{
+  font-size:11.5px;
+  font-weight:600;
+  letter-spacing:.15px;
+  white-space:nowrap;
+}
+
+.rule{height:1px;background:var(--strong);width:100%;flex:none}
+.rule.accent-tick{position:relative}
+.rule.accent-tick::before{
+  content:'';
+  position:absolute;
+  left:0;top:-1px;
+  width:14mm;height:2px;
+  background:var(--accent);
+}
+
+/* The photography is deliberately the dominant visual field. */
+.photo-grid{
+  display:flex;
+  gap:5mm;
+  margin-top:5mm;
+  height:88mm;
+  min-height:88mm;
+  flex:none;
+}
+.photo-col{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.photo-col.hero{flex:1.45}
+.photo-col.support{flex:1}
+.frame{
+  position:relative;
+  overflow:hidden;
+  background:#EFEDE8;
+  min-height:0;
+  flex:1;
+}
+.frame.screen-frame{background:var(--screen)}
+.frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.frame.screen-frame img{object-fit:contain}
+.frame.physical-frame img{
+  object-fit:contain;
+  object-position:center center;
+}
+.caption{
+  display:flex;
+  align-items:baseline;
+  gap:2.5mm;
+  padding-top:1.7mm;
+}
+.caption .cap-num{
+  font-family:'Plex Mono';
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--accent);
+  flex-shrink:0;
+}
+.caption .cap-text{
+  font-size:10.2px;
+  line-height:1.25;
+  color:var(--soft);
+  letter-spacing:.03px;
+}
+.caption .cap-text b{color:var(--ink);font-weight:600}
+
+/* Existing annotations remain available without changing their technical meaning. */
+.callout{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  gap:1.6mm;
+  font-family:'Plex Mono';
+  font-size:7.2px;
+  letter-spacing:1px;
+  color:#FAFAF7;
+  text-shadow:0 1px 2px #000;
+  pointer-events:none;
+}
+.callout .num{
+  color:#fff;
+  background:var(--accent);
+  font-weight:600;
+  line-height:1;
+  padding:1.1mm 1.25mm;
+  text-shadow:none;
+}
+.callout .line{height:1px;width:8mm;background:rgba(250,250,247,.72)}
+.c1{left:4%;top:16%}.c2{right:4%;top:22%;flex-direction:row-reverse}
+.c3{left:8%;top:69%}.c4{right:5%;top:67%;flex-direction:row-reverse}.c5{left:43%;bottom:8%}
+.setup-tag{
+  position:absolute;
+  left:4%;bottom:5%;
+  font-family:'Plex Mono';
+  font-size:7.2px;
+  letter-spacing:1px;
+  color:var(--soft);
+  background:rgba(250,250,247,.9);
+  padding:1.3mm 1.8mm;
+}
+
+/* The information below the photographs is larger and tighter, not smaller. */
+.context{
+  margin-top:3.5mm;
+  display:grid;
+  grid-template-columns:1.48fr 1fr;
+  gap:7mm;
+  align-items:start;
+  flex:none;
+}
+.context-block{min-width:0}
+.context-label{
+  font-family:'Plex Mono';
+  font-size:8.3px;
+  font-weight:500;
+  letter-spacing:1.8px;
+  color:var(--accent);
+  margin-bottom:1.7mm;
+  display:block;
+}
+.context-copy{
+  font-size:9.5px;
+  line-height:1.29;
+  color:var(--soft);
+  letter-spacing:.01px;
+}
+.context-copy b{color:var(--ink);font-weight:600}
+.context-side{
+  border-left:1px solid var(--line);
+  padding-left:4.5mm;
+}
+.context-side .context-copy{
+  font-size:9.3px;
+  line-height:1.28;
+}
+.context-chain{
+  font-family:'Plex Mono';
+  font-size:7.7px;
+  line-height:1.4;
+  letter-spacing:.55px;
+  color:var(--soft);
+  margin-top:1.5mm;
+}
+.context-chain b{color:var(--ink);font-weight:600}
+
+.section{
+  margin-top:2.8mm;
+  flex:none;
+}
+.section-label{
+  font-family:'Plex Mono';
+  font-size:8.3px;
+  font-weight:500;
+  letter-spacing:1.9px;
+  color:var(--accent);
+  margin-bottom:1.8mm;
+  display:block;
+}
+.process-seq{
+  display:flex;
+  align-items:center;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+}
+.process-step{display:flex;align-items:baseline;white-space:nowrap}
+.process-step .step-num{
+  font-family:'Plex Mono';
+  font-size:9.8px;
+  font-weight:600;
+  color:var(--accent);
+  margin-right:1.8mm;
+}
+.process-step .step-label{
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.02px;
+}
+.process-arrow{
+  color:var(--strong);
+  margin:0 2.3mm;
+  font-size:11px;
+  font-weight:400;
+}
+
+.tech-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  row-gap:1.5mm;
+}
+.tech-item{
+  font-size:9.4px;
+  line-height:1.2;
+  color:var(--soft);
+  font-weight:400;
+  padding-right:2.5mm;
+  margin-right:2.5mm;
+  border-right:1px solid var(--line);
+}
+.tech-item:last-child{
+  border-right:none;
+  margin-right:0;
+  padding-right:0;
+}
+.tech-item.primary{color:var(--ink);font-weight:600}
+
+.footer{
+  margin-top:auto;
+  padding-top:2.5mm;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex:none;
+}
+.footer .foot-left,.footer .foot-right{
+  font-family:'Plex Mono';
+  font-size:7.5px;
+  letter-spacing:1.7px;
+  color:var(--faint);
+  font-weight:500;
+}
+.footer .foot-right b{color:var(--soft)}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">02</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">CAD-based inspection programming prepared before the first-off component reaches the CMM</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+      <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span></div>
+      <div class="meta-field"><span class="meta-label">SOFTWARE</span><span class="meta-value">ABERLINK 3D</span></div>
+      <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">OFFLINE PROGRAMMING</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="photo-grid">
+    <div class="photo-col hero">
+      <div class="frame screen-frame">
+        <img src="assets/cmm-offline-aberlink-program.jpg" alt="Aberlink 3D CAD-based offline CMM programming environment">
+        
+      </div>
+      <div class="caption">
+        <span class="cap-num">01</span>
+        <span class="cap-text"><b>OFFLINE PROGRAMMING</b> - CAD model, programmed features and probe-path information prepared in Aberlink 3D before physical first-off inspection</span>
+      </div>
+    </div>
+
+    <div class="photo-col support">
+      <div class="frame physical-frame">
+        <img src="assets/cmm-first-off-setup.jpg" alt="Physical first-off component positioned on a CMM fixture">
+        <div class="setup-tag">06 - FIRST-OFF COMPONENT / 07 - PHYSICAL CMM SETUP</div>
+      </div>
+      <div class="caption">
+        <span class="cap-num">02</span>
+        <span class="cap-text"><b>PHYSICAL FIRST-OFF</b> - Component brought to the CMM for setup, online program verification and inspection</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="context">
+    <div class="context-block">
+      <span class="context-label">ENGINEERING CONTEXT</span>
+      <div class="context-copy"><b>Offline CAD programming separates much of inspection-program development from physical CMM availability.</b> The customer drawing establishes the inspection intent; a CAD model generated in a compatible system such as SolidWorks, AutoCAD or Siemens NX can be transferred through supported exchange formats such as STEP or IGES. In Aberlink 3D, the measurement sequence, features, probe approaches and orientations, travel and clearance strategy can then be developed before the first-off component is available.</div>
+      <div class="context-copy" style="margin-top:1.4mm">This allows programming work to run in parallel with manufacturing, <b>minimising the amount of CMM programming and adjustment required after the first component arrives</b>. The prepared routine is then brought online and verified against the actual workholding, datum setup, probe accessibility, physical clearance, machine/probe behaviour and measurement results.</div>
+    </div>
+    <div class="context-block context-side">
+      <span class="context-label">RIGHT-FIRST-TIME OBJECTIVE</span>
+      <div class="context-copy">Offline programming supports a right-first-time objective by developing the <b>CMM measurement strategy</b> before physical execution. Path review can reduce the risk of accessibility and movement issues, but it does not replace verification on the actual CMM.</div>
+      <div class="context-copy" style="margin-top:1.4mm">Complex geometry can increase feature count, probe orientations, path complexity and clearance demands; however, datum structure, workholding, probe selection, accessibility and actual first-off variation also influence successful validation.</div>
+      <div class="context-chain"><b>OFFLINE PROGRAM</b> → PHYSICAL SETUP → ONLINE VERIFICATION → VALIDATED INSPECTION ROUTINE</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">Drawing Review</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">CAD Preparation</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Offline Programming</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Probe-Path Planning</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">Program Verification</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">First-Off Inspection</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Programming</span>
+      <span class="tech-item">Offline Programming</span>
+      <span class="tech-item">Measurement Strategy</span>
+      <span class="tech-item">Probe-Path Planning</span>
+      <span class="tech-item">Probe Accessibility</span>
+      <span class="tech-item">Collision Clearance</span>
+      <span class="tech-item">First-Off Verification</span><span class="tech-item">CAD-to-CMM</span>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>02</b> &nbsp;/&nbsp; CMM&ndash;OFFLINE&ndash;02</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MASTER TEMPLATE — duplicate this file per page</title>
+<style>
+
+@page{ size: 297mm 210mm; margin: 0; }
+
+/* =====================================================================
+   PORTFOLIO MASTER TEMPLATE — v1
+   Fixed system: page, grid, type, colour, spacing, image treatment.
+   VARIABLE content is marked inline with "VARIABLE:" comments.
+   ===================================================================== */
+
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Light.ttf');    font-weight:300; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Regular.ttf');  font-weight:400; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Medium.ttf');   font-weight:500; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-SemiBold.ttf'); font-weight:600; }
+@font-face { font-family:'Inter'; src:url('assets/InterStatic-Bold.ttf');     font-weight:700; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-Regular.ttf');  font-weight:400; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-Medium.ttf');   font-weight:500; }
+@font-face { font-family:'Plex Mono'; src:url('assets/IBMPlexMono-SemiBold.ttf'); font-weight:600; }
+
+:root{
+  /* ---- FIXED colour system ---- */
+  --bg:        #FAFAF7;
+  --ink:       #1B1B1E;
+  --ink-soft:  #58585E;
+  --ink-faint: #97969C;
+  --line:      #DBD9D2;
+  --line-strong:#C7C4BB;
+  --accent:    #AD5A2B;
+  --accent-soft:#D9C3B4;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html,body{
+  width:297mm; height:210mm;
+  background:var(--bg);
+  font-family:'Inter', Arial, sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  width:297mm; height:210mm;
+  padding:13mm 15mm 10mm 15mm;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ---------------------------------------------------------------------
+   HEADER  (fixed structure — number / title stack / metadata strip)
+--------------------------------------------------------------------- */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding-bottom:5mm;
+}
+.header-left{ display:flex; align-items:flex-end; }
+.proj-number{
+  font-family:'Plex Mono';
+  font-weight:500;
+  font-size:30px;
+  color:var(--accent);
+  line-height:1;
+  padding-right:5mm;
+  margin-right:5mm;
+  border-right:1px solid var(--line-strong);
+}
+.title-stack{ line-height:1.1; }
+.title-stack .kicker{
+  font-family:'Plex Mono';
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--ink-faint);
+  font-weight:500;
+  margin-bottom:2mm;
+  display:block;
+}
+.title-stack h1{
+  font-size:27px;
+  font-weight:600;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+  margin-bottom:1.8mm;
+}
+.title-stack .subtitle{
+  font-size:12.5px;
+  font-weight:400;
+  color:var(--ink-soft);
+  letter-spacing:0.1px;
+}
+
+.meta-strip{ display:flex; align-items:flex-end; }
+.meta-field{
+  padding:0 5.5mm;
+  border-left:1px solid var(--line);
+  text-align:left;
+}
+.meta-field:last-child{ padding-right:0; }
+.meta-field .meta-label{
+  font-family:'Plex Mono';
+  font-size:8.5px;
+  letter-spacing:1.5px;
+  color:var(--ink-faint);
+  font-weight:500;
+  display:block;
+  margin-bottom:1.6mm;
+}
+.meta-field .meta-value{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.2px;
+  white-space:nowrap;
+}
+
+.rule{ height:1px; background:var(--line-strong); width:100%; }
+.rule.accent-tick{ position:relative; }
+.rule.accent-tick::before{
+  content:''; position:absolute; left:0; top:-1px;
+  width:14mm; height:2px; background:var(--accent);
+}
+
+/* ---------------------------------------------------------------------
+   PHOTOGRAPH GRID  (fixed proportions + treatment; images = VARIABLE)
+--------------------------------------------------------------------- */
+.photo-grid{
+  display:flex;
+  gap:6mm;
+  margin-top:6mm;
+  flex:1;
+  min-height:0;
+}
+.photo-col{ display:flex; flex-direction:column; min-height:0; }
+.photo-col.hero{ flex:1.55; }
+.photo-col.support{ flex:1; gap:6mm; display:flex; flex-direction:column; }
+.support .photo-row{ flex:1; display:flex; flex-direction:column; min-height:0; }
+
+.frame{
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  background:#EFEDE8;
+}
+.frame img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+.frame.placeholder{
+  display:flex; align-items:center; justify-content:center;
+  border:1px dashed var(--line-strong);
+  background:#F1F0EC;
+}
+.frame.placeholder span{
+  font-family:'Plex Mono'; font-size:10px; letter-spacing:1.5px;
+  color:var(--ink-faint); text-align:center; padding:4mm;
+}
+.caption{
+  display:flex;
+  align-items:baseline;
+  gap:2.5mm;
+  padding-top:2.2mm;
+}
+.caption .cap-num{
+  font-family:'Plex Mono';
+  font-size:10px;
+  font-weight:600;
+  color:var(--accent);
+  flex-shrink:0;
+}
+.caption .cap-text{
+  font-size:10.5px;
+  color:var(--ink-soft);
+  letter-spacing:0.1px;
+}
+.caption .cap-text b{ color:var(--ink); font-weight:600; }
+
+/* ---------------------------------------------------------------------
+   PROCESS EXPOSURE  (fixed horizontal-sequence styling)
+--------------------------------------------------------------------- */
+.section{ margin-top:6mm; }
+.section-label{
+  font-family:'Plex Mono';
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:2px;
+  color:var(--ink-faint);
+  margin-bottom:3mm;
+  display:block;
+}
+.process-seq{
+  display:flex;
+  align-items:center;
+  flex-wrap:nowrap;
+}
+.process-step{ display:flex; align-items:baseline; white-space:nowrap; }
+.process-step .step-num{
+  font-family:'Plex Mono';
+  font-size:10px;
+  font-weight:600;
+  color:var(--accent);
+  margin-right:2mm;
+}
+.process-step .step-label{
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:0.1px;
+}
+.process-arrow{
+  color:var(--line-strong);
+  margin:0 4mm;
+  font-size:12px;
+  font-weight:400;
+}
+
+/* ---------------------------------------------------------------------
+   TECHNICAL EXPOSURE  (fixed keyword-strip styling)
+--------------------------------------------------------------------- */
+.tech-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  row-gap:2mm;
+}
+.tech-item{
+  font-size:11.5px;
+  color:var(--ink-soft);
+  font-weight:400;
+  padding-right:4mm;
+  margin-right:4mm;
+  border-right:1px solid var(--line);
+}
+.tech-item:last-child{ border-right:none; margin-right:0; padding-right:0; }
+.tech-item.primary{ color:var(--ink); font-weight:600; }
+
+/* ---------------------------------------------------------------------
+   FOOTER  (fixed)
+--------------------------------------------------------------------- */
+.footer{
+  margin-top:6mm;
+  padding-top:3mm;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.footer .foot-left{
+  font-family:'Plex Mono';
+  font-size:8px;
+  letter-spacing:1.8px;
+  color:var(--ink-faint);
+  font-weight:500;
+}
+.footer .foot-right{
+  font-family:'Plex Mono';
+  font-size:8px;
+  letter-spacing:1.8px;
+  color:var(--ink-faint);
+  font-weight:500;
+}
+.footer .foot-right b{ color:var(--ink-soft); }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER — VARIABLE: project number, title, subtitle, 4 metadata fields -->
+  <!-- Metadata fields are fixed at FOUR by default. If a future page genuinely
+       has a 5th relevant field (e.g. MATERIAL), add one more .meta-field —
+       the flex layout will accommodate it, but keep 4 as the standard. -->
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">02</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE MANUFACTURING PORTFOLIO</span>
+        <h1>[ PROCESS TITLE ]</h1>
+        <div class="subtitle">[ Component / project subtitle ]</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field">
+        <span class="meta-label">ROLE</span>
+        <span class="meta-value">[ ROLE ]</span>
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">PROCESS</span>
+        <span class="meta-value">[ PROCESS ]</span>
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">MACHINE</span>
+        <span class="meta-value">[ MACHINE ]</span>
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">CYCLE</span>
+        <span class="meta-value">[ CYCLE ]</span>
+      </div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <!-- PHOTOGRAPH GRID — VARIABLE: swap the three .frame contents for real
+       photos: replace the placeholder <div class="frame placeholder"> with
+       <div class="frame"><img src="assets/your-photo.jpg"></div>
+       Keep the hero (left) as the single best evidentiary shot; the two
+       supporting photos stay stacked on the right. If a supporting image is
+       itself a screen/interface capture, keep object-fit:contain with a dark
+       background as page 01 does — anything else should use object-fit:cover. -->
+  <div class="photo-grid">
+    <div class="photo-col hero">
+      <div class="frame placeholder"><span>HERO PHOTOGRAPH<br>(largest — finished part / primary evidence)</span></div>
+      <div class="caption">
+        <span class="cap-num">02</span>
+        <span class="cap-text"><b>[ CAPTION LABEL ]</b> — [ short caption ]</span>
+      </div>
+    </div>
+    <div class="photo-col support">
+      <div class="photo-row">
+        <div class="frame placeholder"><span>SUPPORTING PHOTOGRAPH 1<br>(e.g. equipment / interface)</span></div>
+        <div class="caption">
+          <span class="cap-num">01</span>
+          <span class="cap-text"><b>[ CAPTION LABEL ]</b> — [ short caption ]</span>
+        </div>
+      </div>
+      <div class="photo-row">
+        <div class="frame placeholder"><span>SUPPORTING PHOTOGRAPH 2<br>(e.g. detail / close-up)</span></div>
+        <div class="caption">
+          <span class="cap-num">03</span>
+          <span class="cap-text"><b>[ CAPTION LABEL ]</b> — [ short caption ]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS EXPOSURE — VARIABLE: 4–7 steps read well in this layout.
+       Add/remove a .process-step + .process-arrow pair as needed; keep
+       step labels to 1–3 words so the line doesn't wrap. -->
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">[ Step ]</span></div>
+      <span class="process-arrow">&#8594;</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">[ Step ]</span></div>
+      <span class="process-arrow">&#8594;</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">[ Step ]</span></div>
+      <span class="process-arrow">&#8594;</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">[ Step ]</span></div>
+      <span class="process-arrow">&#8594;</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">[ Step ]</span></div>
+      <span class="process-arrow">&#8594;</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">[ Step ]</span></div>
+    </div>
+  </div>
+
+  <!-- TECHNICAL EXPOSURE — VARIABLE: keyword list. Keep the FIRST item as
+       "primary" (bold, dark) to anchor the core process/skill; the rest
+       stay regular weight, divided by thin rules. 6–9 keywords fits the
+       line at this type size without wrapping. -->
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">[ Primary keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+      <span class="tech-item">[ Keyword ]</span>
+    </div>
+  </div>
+
+  <!-- FOOTER — FIXED structure, VARIABLE page code only -->
+  <div class="rule"></div>
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>02</b> &nbsp;/&nbsp; [ PROCESS-CODE ]&ndash;02</span>
+  </div>
+
+</div>
+</body>
+</html>

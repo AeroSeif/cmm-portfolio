@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>03 / CMM Programming - Multi-Face Inspection &amp; Path Optimisation</title>
+<style>
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--soft:#58585E;--faint:#97969C;--line:#DBD9D2;--strong:#C7C4BB;--accent:#AD5A2B;--paper:#F1F0EC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:297mm;height:210mm;background:var(--bg);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:13mm 15mm 10mm;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:5mm}
+.header-left{display:flex;align-items:flex-end}.proj-number{font-family:'Plex Mono';font-weight:500;font-size:30px;color:var(--accent);line-height:1;padding-right:5mm;margin-right:5mm;border-right:1px solid var(--strong)}
+.title-stack{line-height:1.05}.kicker{font-family:'Plex Mono';font-size:9px;letter-spacing:2px;color:var(--faint);font-weight:500;margin-bottom:2mm;display:block}.title-stack h1{font-size:20.5px;font-weight:600;letter-spacing:.25px;text-transform:uppercase;margin-bottom:1.7mm}.subtitle{font-size:11.5px;color:var(--soft);letter-spacing:.05px}
+.meta-strip{display:flex;align-items:flex-end}.meta-field{padding:0 4.5mm;border-left:1px solid var(--line);text-align:left}.meta-field:last-child{padding-right:0}.meta-label{font-family:'Plex Mono';font-size:8.2px;letter-spacing:1.4px;color:var(--faint);font-weight:500;display:block;margin-bottom:1.5mm}.meta-value{font-size:12.4px;font-weight:600;letter-spacing:.15px;white-space:nowrap}
+.rule{height:1px;background:var(--strong);width:100%}.accent-tick{position:relative}.accent-tick:before{content:'';position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+.visual-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:6mm;height:61mm;min-height:61mm;padding-bottom:3mm;flex-shrink:0}.visual-left,.visual-right{min-height:0}.visual-left,.visual-right{display:flex;flex-direction:column;justify-content:flex-start}.photo-block{display:grid;grid-template-columns:minmax(0,1fr) 34mm;gap:3mm;align-items:center;height:58mm}.frame{position:relative;overflow:hidden;background:#EFEDE8;height:58mm}.frame img{width:100%;height:100%;display:block;object-fit:contain;object-position:center}.caption{display:flex;align-items:flex-start;gap:2mm;padding:0;min-height:0}.cap-num{font-family:'Plex Mono';font-size:9.5px;font-weight:600;color:var(--accent);flex-shrink:0}.cap-text{font-size:8.1px;color:var(--soft);line-height:1.22}.cap-text b{color:var(--ink);font-weight:600}
+.intro-strip{margin-top:4.5mm;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2mm 0;display:grid;grid-template-columns:1.15fr .85fr;gap:5mm}.intro-copy{font-size:8.2px;line-height:1.28;color:var(--soft)}.intro-copy b{color:var(--ink);font-weight:600}.scope-note{border-left:1px solid var(--line);padding-left:4mm;font-family:'Plex Mono';font-size:7.7px;line-height:1.45;color:var(--soft)}.scope-note b{color:var(--ink)}
+.section{margin-top:2.3mm}.section-label{font-family:'Plex Mono';font-size:8.6px;font-weight:600;letter-spacing:1.8px;color:var(--ink);margin-bottom:2mm;display:block}
+.challenge-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm}.challenge{border-top:1px solid var(--line);padding-top:1.7mm}.challenge h3{font-family:'Plex Mono';font-size:7.8px;letter-spacing:1.2px;color:var(--ink);margin-bottom:1.1mm}.challenge p{font-size:7.65px;line-height:1.24;color:var(--soft)}.challenge p b{color:var(--ink);font-weight:600}
+.move-callout{margin-top:2.8mm;border-top:1.5px solid var(--accent);border-bottom:1px solid var(--line);padding:2.2mm 0 2.3mm;display:grid;grid-template-columns:.86fr 2.14fr;gap:5mm;align-items:center}.move-title{font-family:'Plex Mono';font-size:10px;line-height:1.15;letter-spacing:1.5px;font-weight:600;color:var(--ink)}.move-title span{color:var(--accent)}.move-copy{font-size:7.8px;line-height:1.24;color:var(--soft);margin-top:1.4mm}.move-copy b{color:var(--ink)}
+.path-svg{width:100%;height:19mm;display:block}.path-label{font-family:'Plex Mono';font-size:6.4px;letter-spacing:.5px;fill:#58585E}.path-small{font-family:'Plex Mono';font-size:5.9px;letter-spacing:.6px;fill:#97969C}.path-line{fill:none;stroke:#C7C4BB;stroke-width:1.2}.path-dash{fill:none;stroke:#AD5A2B;stroke-width:1.2;stroke-dasharray:3 2}.path-node{fill:#FAFAF7;stroke:#AD5A2B;stroke-width:1.2}
+.measure-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:5mm;margin-top:2.7mm}.measure-panel{border-top:1px solid var(--line);padding-top:1.7mm}.measure-panel h3{font-family:'Plex Mono';font-size:7.8px;letter-spacing:1.2px;color:var(--ink);margin-bottom:1.1mm}.measure-panel p{font-size:7.7px;line-height:1.24;color:var(--soft)}.measure-panel p b{color:var(--ink)}
+.process-seq{display:flex;align-items:center;flex-wrap:nowrap}.process-step{display:flex;align-items:baseline;white-space:nowrap}.step-num{font-family:'Plex Mono';font-size:9.5px;font-weight:600;color:var(--accent);margin-right:1.8mm}.step-label{font-size:8.6px;font-weight:500}.process-arrow{color:var(--strong);margin:0 2.2mm;font-size:11px}
+.tech-row{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:1.3mm}.tech-item{font-size:8.1px;color:var(--soft);font-weight:400;padding-right:1.8mm;margin-right:1.8mm;border-right:1px solid var(--line)}.tech-item:last-child{border-right:none;margin-right:0;padding-right:0}.tech-item.primary{color:var(--ink);font-weight:600}
+.footer{margin-top:1.5mm;padding-top:2.4mm;display:flex;justify-content:space-between;align-items:center}.foot-left,.foot-right{font-family:'Plex Mono';font-size:7.7px;letter-spacing:1.7px;color:var(--faint);font-weight:500}.foot-right b{color:var(--soft)}
+
+/* =========================================================
+   VISUAL OPTIMISATION — CONTENT PRESERVED
+   Layout-only refinement for A4 landscape PDF.
+   ========================================================= */
+
+/* Use the page more effectively without changing content */
+.page{
+  padding:10mm 13mm 7mm;
+}
+
+/* Compact, stronger benchmark-style header */
+.header{
+  padding-bottom:4mm;
+}
+.proj-number{
+  font-size:32px;
+  padding-right:4mm;
+  margin-right:4mm;
+}
+.title-stack h1{
+  font-size:24px;
+  margin-bottom:1.5mm;
+}
+.subtitle{
+  font-size:12.5px;
+}
+.meta-field{
+  padding:0 4mm;
+}
+.meta-field .meta-label{
+  font-size:8px;
+  margin-bottom:1.2mm;
+}
+.meta-field .meta-value{
+  font-size:12.5px;
+}
+
+/* ---------------------------------------------------------
+   IMAGE-FIRST COMPOSITION
+   Two supplied photographs become the dominant visual.
+   --------------------------------------------------------- */
+.visual-grid{
+  grid-template-columns:1fr 1fr;
+  gap:5mm;
+  margin-top:5mm;
+  height:67mm;
+  min-height:67mm;
+  padding-bottom:0;
+}
+.visual-left,.visual-right{
+  display:block;
+}
+.photo-block{
+  display:flex;
+  flex-direction:column;
+  gap:1.8mm;
+  height:67mm;
+}
+.frame{
+  width:100%;
+  height:59mm;
+  flex:none;
+  background:#EFEDE8;
+  border:0;
+}
+.frame img{
+  object-fit:contain;
+  object-position:center;
+}
+.caption{
+  gap:2mm;
+  padding:0;
+  align-items:flex-start;
+}
+.cap-num{
+  font-size:10.5px;
+}
+.cap-text{
+  font-size:9.2px;
+  line-height:1.2;
+}
+
+/* Give the introductory block more readable scale */
+.intro-strip{
+  margin-top:3.5mm;
+  padding:1.8mm 0;
+  grid-template-columns:1.2fr .8fr;
+  gap:5mm;
+}
+.intro-copy{
+  font-size:8.6px;
+  line-height:1.27;
+}
+.scope-note{
+  font-size:8px;
+  line-height:1.38;
+}
+
+/* ---------------------------------------------------------
+   TECHNICAL CONTENT — readable, compact, clearly separated
+   --------------------------------------------------------- */
+.section{
+  margin-top:2.5mm;
+}
+.section-label{
+  font-size:8.8px;
+  margin-bottom:1.6mm;
+}
+
+.challenge-grid{
+  gap:5mm;
+}
+.challenge{
+  padding-top:1.5mm;
+}
+.challenge h3{
+  font-size:8px;
+  margin-bottom:1mm;
+}
+.challenge p{
+  font-size:8.1px;
+  line-height:1.2;
+}
+
+/* Make the Move Via panel a genuine visual feature */
+.move-callout{
+  margin-top:2.2mm;
+  padding:1.8mm 0 1.9mm;
+  grid-template-columns:.72fr 2.28fr;
+  gap:5mm;
+}
+.move-title{
+  font-size:10.5px;
+}
+.move-copy{
+  font-size:8px;
+  line-height:1.2;
+  margin-top:1.2mm;
+}
+.path-svg{
+  height:17mm;
+}
+
+/* Measurement explanation */
+.measure-grid{
+  gap:5mm;
+  margin-top:2.2mm;
+}
+.measure-panel{
+  padding-top:1.5mm;
+}
+.measure-panel h3{
+  font-size:8px;
+  margin-bottom:1mm;
+}
+.measure-panel p{
+  font-size:8px;
+  line-height:1.2;
+}
+
+/* Bottom process and keyword strips */
+.process-seq{
+  width:100%;
+}
+.step-num{
+  font-size:9.5px;
+  margin-right:1.5mm;
+}
+.step-label{
+  font-size:8.4px;
+}
+.process-arrow{
+  margin:0 1.8mm;
+  font-size:10px;
+}
+.tech-row{
+  row-gap:1mm;
+}
+.tech-item{
+  font-size:8.2px;
+  padding-right:1.7mm;
+  margin-right:1.7mm;
+}
+
+/* Footer stays subtle and visible */
+.footer{
+  margin-top:1.2mm;
+  padding-top:2mm;
+}
+.foot-left,.foot-right{
+  font-size:7.5px;
+}
+
+/* Print safety */
+@media print{
+  html,body{
+    width:297mm;
+    height:210mm;
+  }
+  .page{
+    width:297mm;
+    height:210mm;
+    overflow:hidden;
+    break-after:page;
+    page-break-after:always;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">03</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">Programming strategy for probe accessibility, feature construction and efficient multi-face inspection</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+      <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span></div>
+      <div class="meta-field"><span class="meta-label">SOFTWARE</span><span class="meta-value">ABERLINK 3D</span></div>
+      <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">MOVE VIA / SAFE VOLUME</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="visual-grid">
+    <div class="visual-left">
+      <div class="photo-block">
+        <div class="frame"><img src="assets/component-face-2.jpg" alt="Precision machined component, multiple faces and internal features"></div>
+        <div class="caption"><span class="cap-num">01</span><span class="cap-text"><b>MULTI-FACE COMPONENT</b> - Complex geometry requiring planned probe orientations, feature access and measurement sequencing.</span></div>
+      </div>
+    </div>
+    <div class="visual-right">
+      <div class="photo-block">
+        <div class="frame"><img src="assets/component-face-1.jpg" alt="Precision machined component, alternate inspection face"></div>
+        <div class="caption"><span class="cap-num">02</span><span class="cap-text"><b>SIDE 1 / SIDE 2 ACCESS</b> - Alternate orientation used where internal planes and radii could not be reached from a single setup.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-strip">
+    <div class="intro-copy"><b>Programming is more than point collection.</b> For a long inspection routine, the sequence must coordinate datum establishment, probe accessibility, stylus strategy, feature construction, collision avoidance and efficient probe travel across multiple faces.</div>
+    <div class="scope-note"><b>PROGRAMMING SCOPE</b><br>Drawing package: approximately 8 pages<br>Inspection routine: long, multi-face feature sequence</div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">PROGRAMMING CHALLENGES</span>
+    <div class="challenge-grid">
+      <div class="challenge">
+        <h3>01 / MULTI-AXIS PROBE ACCESS</h3>
+        <p>Different faces and internal features required planned <b>probe orientations</b>. PH10T Probe Angles A&B indexing and stylus configuration were selected around feature accessibility, reach, clearance and measurement requirements.</p>
+      </div>
+      <div class="challenge">
+        <h3>02 / DATUM &amp; FEATURE CONSTRUCTION</h3>
+        <p>The part coordinate system was established from the required references. Additional planes were <b>constructed manually</b> so circular and arc features could be evaluated on the appropriate geometric reference.</p>
+      </div>
+      <div class="challenge">
+        <h3>03 / SIDE 1 ↔ SIDE 2</h3>
+        <p>Some internal planes and radii were inaccessible from one orientation, so the routine was structured into <b>Side 1 / Side 2</b> measurement sequences with controlled probe reorientation between faces.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="move-callout">
+    <div>
+      <div class="move-title"><span>MOVE VIA</span><br>SAFE VOLUME</div>
+      <div class="move-copy">A deliberate path-planning layer used to reduce unnecessary rise / escape / re-entry movements while maintaining <b>collision avoidance</b>.</div>
+    </div>
+    <div>
+      <svg class="path-svg" viewBox="0 0 760 95" aria-label="Simplified Safe Volume and Move Via probe path diagram">
+        <rect x="16" y="12" width="600" height="70" rx="2" fill="none" stroke="#DBD9D2" stroke-width="1"/>
+        <text x="24" y="25" class="path-small">ESTABLISHED SAFE VOLUME</text>
+        <line x1="92" y1="59" x2="214" y2="42" stroke="#AD5A2B" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <line x1="214" y1="42" x2="344" y2="64" stroke="#AD5A2B" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <line x1="344" y1="64" x2="474" y2="39" stroke="#AD5A2B" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <line x1="474" y1="39" x2="612" y2="39" stroke="#C7C4BB" stroke-width="1.2"/>
+        <line x1="612" y1="39" x2="666" y2="16" stroke="#C7C4BB" stroke-width="1.2"/>
+        <line x1="666" y1="16" x2="735" y2="16" stroke="#C7C4BB" stroke-width="1.2"/>
+        <circle cx="92" cy="59" r="4" fill="#FAFAF7" stroke="#AD5A2B" stroke-width="1.2"/>
+        <circle cx="214" cy="42" r="4" fill="#FAFAF7" stroke="#AD5A2B" stroke-width="1.2"/>
+        <circle cx="344" cy="64" r="4" fill="#FAFAF7" stroke="#AD5A2B" stroke-width="1.2"/>
+        <circle cx="474" cy="39" r="4" fill="#FAFAF7" stroke="#AD5A2B" stroke-width="1.2"/>
+        <circle cx="612" cy="39" r="4" fill="#AD5A2B"/>
+        <text x="66" y="78" class="path-label">FEATURE GROUP</text>
+        <text x="192" y="29" class="path-label">MOVE VIA</text>
+        <text x="324" y="82" class="path-label">FEATURE GROUP</text>
+        <text x="452" y="27" class="path-label">MOVE VIA</text>
+        <text x="594" y="58" class="path-label">ESCAPE</text>
+        <text x="650" y="11" class="path-label">RE-ORIENT</text>
+        <text x="682" y="31" class="path-small">NEXT FACE</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="measure-grid">
+    <div class="measure-panel">
+      <h3>SAFE VOLUME CONSTRUCTION</h3>
+      <p>As geometry is measured, Aberlink 3D can establish a protected <b>Safe Volume</b> around the measured component. I used strategically selected boundary / extreme features early in the routine so the relevant volume was established before detailed inspection. <b>Move Via</b> points were then introduced between measurement groups to keep travel controlled within the established volume before an intentional escape for probe reorientation or another face.</p>
+    </div>
+    <div class="measure-panel">
+      <h3>PROBE &amp; MEASUREMENT STRATEGY</h3>
+      <p>Different stylus configurations were selected according to <b>accessibility, reach, clearance, probe orientation and measurement performance</b>. Measurement-point count and distribution were treated as an engineering decision influenced by feature geometry, tolerance, form requirements and the confidence required from the inspection result.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">Datum Setup</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">Probe Strategy</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Safe Volume</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Feature Planning</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">Move Via Optimisation</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">Multi-Face Inspection</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">07</span><span class="step-label">GD&amp;T Evaluation</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Programming</span><span class="tech-item">Aberlink 3D</span><span class="tech-item">PH10T</span><span class="tech-item">Safe Volume</span><span class="tech-item">Move Via</span><span class="tech-item">Probe Path Planning</span><span class="tech-item">Probe Accessibility</span><span class="tech-item">Stylus Selection</span><span class="tech-item">Datum Alignment</span><span class="tech-item">Feature Construction</span><span class="tech-item">GD&amp;T</span><span class="tech-item">Inspection Optimisation</span>
+    </div>
+  </div>
+
+  <div class="rule" style="margin-top:2mm"></div>
+  <div class="footer"><span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span><span class="foot-right">PAGE <b>03</b> &nbsp;/&nbsp; CMM&ndash;PATH&ndash;03</span></div>
+</div>
+</body>
+</html>

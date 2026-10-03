@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>04 / CMM Programming - CAD-Based Feature Construction &amp; Complex Geometry</title>
+<style>
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--soft:#58585E;--faint:#97969C;--line:#DBD9D2;--strong:#C7C4BB;--accent:#AD5A2B;--paper:#F1F0EC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:297mm;height:210mm;background:var(--bg);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:13mm 15mm 9mm;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:5mm}
+.header-left{display:flex;align-items:flex-end}.proj-number{font-family:'Plex Mono';font-weight:500;font-size:30px;color:var(--accent);line-height:1;padding-right:5mm;margin-right:5mm;border-right:1px solid var(--strong)}
+.title-stack{line-height:1.04;max-width:128mm}.kicker{font-family:'Plex Mono';font-size:9px;letter-spacing:2px;color:var(--faint);font-weight:500;margin-bottom:2mm;display:block}.title-stack h1{font-size:18.6px;font-weight:600;letter-spacing:.25px;text-transform:uppercase;margin-bottom:1.6mm}.subtitle{font-size:10.8px;color:var(--soft);letter-spacing:.05px}
+.meta-strip{display:flex;align-items:flex-end}.meta-field{padding:0 3.4mm;border-left:1px solid var(--line);text-align:left}.meta-field:last-child{padding-right:0}.meta-label{font-family:'Plex Mono';font-size:8px;letter-spacing:1.35px;color:var(--faint);font-weight:500;display:block;margin-bottom:1.5mm}.meta-value{font-size:10.9px;font-weight:600;letter-spacing:.12px;white-space:nowrap}
+.rule{height:1px;background:var(--strong);width:100%}.accent-tick{position:relative}.accent-tick:before{content:'';position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+/* photographic evidence */
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:5.5mm;height:63mm;min-height:63mm}
+.photo-card{display:grid;grid-template-columns:minmax(0,1fr) 29mm;gap:3mm;min-width:0}
+.photo-frame{height:63mm;background:#EFEDE8;overflow:hidden}.photo-frame img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.caption{align-self:center;display:flex;align-items:flex-start;gap:2mm}.cap-num{font-family:'Plex Mono';font-size:9.5px;font-weight:600;color:var(--accent);flex-shrink:0}.cap-text{font-size:8.1px;color:var(--soft);line-height:1.25}.cap-text b{color:var(--ink);font-weight:600}
+/* central CAD-to-CMM story */
+.story{margin-top:2.5mm;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.8mm 0;display:grid;grid-template-columns:1.58fr .62fr;gap:4mm;min-height:32mm}
+.flow-panel{min-width:0}.section-label{font-family:'Plex Mono';font-size:8.6px;font-weight:600;letter-spacing:1.8px;color:var(--accent);margin-bottom:2mm;display:block}
+.flow{display:flex;align-items:center;gap:.65mm;white-space:nowrap}.flow-node{border:1px solid var(--strong);width:20.2mm;min-height:15.8mm;padding:1mm .75mm;background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.flow-node .node-k{font-family:'Plex Mono';font-size:5.4px;letter-spacing:.55px;color:var(--faint);margin-bottom:.7mm;text-align:center}.flow-node .node-t{font-size:5.45px;line-height:1.05;font-weight:600;text-align:center;overflow-wrap:anywhere;word-break:normal;hyphens:auto;max-width:100%}.flow-arrow{font-size:8px;flex:0 0 auto;color:var(--accent);text-align:center}.flow-note{font-size:7px;line-height:1.25;color:var(--soft);margin-top:2mm}.flow-note b{color:var(--ink)}
+.story-copy{border-left:1px solid var(--line);padding-left:4mm;font-size:7.7px;line-height:1.27;color:var(--soft)}.story-copy p+p{margin-top:1.5mm}.story-copy b{color:var(--ink);font-weight:600}.story-tag{font-family:'Plex Mono';font-size:7px;letter-spacing:1px;color:var(--accent);margin-bottom:1.5mm}
+/* engineering logic */
+.challenge-grid{margin-top:2.1mm;display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}.challenge{border-top:1px solid var(--line);padding-top:1.6mm}.challenge h3{font-family:'Plex Mono';font-size:7.5px;letter-spacing:1.1px;color:var(--accent);margin-bottom:1.1mm}.challenge p{font-size:7.15px;line-height:1.2;color:var(--soft)}.challenge p b{color:var(--ink);font-weight:600}
+.access-strip{margin-top:1mm;border-top:1.5px solid var(--accent);padding:.8mm 0 .7mm;display:grid;grid-template-columns:38mm minmax(0,1fr);gap:2mm;align-items:center}.access-title{font-family:'Plex Mono';font-size:9.2px;line-height:1.05;letter-spacing:1.35px;font-weight:600}.access-title span{color:var(--accent)}.access-copy{font-size:7.5px;line-height:1.18;color:var(--soft)}.access-copy b{color:var(--ink)}
+/* process + exposure */
+.process-section{margin-top:1.2mm}.process-seq{display:flex;align-items:center;flex-wrap:nowrap}.process-step{display:flex;align-items:baseline;white-space:nowrap}.step-num{font-family:'Plex Mono';font-size:9.3px;font-weight:600;color:var(--accent);margin-right:1.7mm}.step-label{font-size:8.4px;font-weight:500}.process-arrow{color:var(--strong);margin:0 2.1mm;font-size:11px}
+.tech-section{margin-top:1.2mm}.tech-row{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:1.2mm}.tech-item{font-size:8px;color:var(--soft);font-weight:400;padding-right:1.7mm;margin-right:1.7mm;border-right:1px solid var(--line)}.tech-item:last-child{border-right:none;margin-right:0;padding-right:0}.tech-item.primary{color:var(--ink);font-weight:600}
+.footer{margin-top:auto;padding-top:2.4mm;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line)}.foot-left,.foot-right{font-family:'Plex Mono';font-size:7.7px;letter-spacing:1.7px;color:var(--faint);font-weight:500}.foot-right b{color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">04</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">CAD-Based Feature Construction &amp; Complex Geometry</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+      <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span></div>
+      <div class="meta-field"><span class="meta-label">SOFTWARE</span><span class="meta-value">SOLIDWORKS + ABERLINK 3D</span></div>
+      <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">CAD → CMM</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="photo-grid">
+    <div class="photo-card">
+      <div class="photo-frame"><img src="assets/component-top-view.jpg" alt="Precision machined component showing internal curved or contoured surface and hole pattern"></div>
+      <div class="caption"><span class="cap-num">01</span><span class="cap-text"><b>CURVED-SURFACE HOLE PATTERN</b> - Inspection features distributed across a contoured internal surface; full drawing geometry and values intentionally omitted.</span></div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-frame"><img src="assets/component-access-view.jpg" alt="Precision machined component elevated on fixture for underside and internal feature access"></div>
+      <div class="caption"><span class="cap-num">02</span><span class="cap-text"><b>TWO-SIDED ACCESS</b> - Elevated setup provided physical access to relevant underside reference features while maintaining a controlled inspection strategy.</span></div>
+    </div>
+  </div>
+
+  <div class="story">
+    <div class="flow-panel">
+      <span class="section-label">CAD → CMM / FEATURE CONSTRUCTION</span>
+      <div class="flow">
+        <div class="flow-node"><span class="node-k">01</span><span class="node-t">SOLIDWORKS<br>MODEL</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">02</span><span class="node-t">DATUM /<br>COORDINATE SYSTEM</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">03</span><span class="node-t">NOMINAL HOLE<br>CENTRES · X/Y/Z</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">04</span><span class="node-t">ABERLINK<br>REFERENCE POINTS</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">05</span><span class="node-t">CONSTRUCTED<br>PLANES</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">06</span><span class="node-t">MEASURED<br>CIRCLES</span></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node"><span class="node-k">07</span><span class="node-t">PROJECT /<br>EVALUATE</span></div>
+      </div>
+      <div class="flow-note"><b>Position / profile evaluation</b> is performed from the measured features in the established datum reference frame; CAD values remain <b>nominal references</b>, not measured results.</div>
+    </div>
+    <div class="story-copy">
+      <div class="story-tag">ENGINEERING LOGIC</div>
+      <p>The CAD model was used to derive the <b>nominal centre coordinates</b> of the hole features relative to the component datum structure. These nominal XYZ values were then used to create corresponding reference points in Aberlink 3D.</p>
+      <p>Those references supported construction of the planes needed to relate measured circles on the curved/contoured geometry to the intended inspection definition.</p>
+    </div>
+  </div>
+
+  <div class="challenge-grid">
+    <div class="challenge">
+      <h3>01 / DATUM-BASED COORDINATE SYSTEM</h3>
+      <p>The inspection coordinate system was established from the drawing's <b>datum reference structure</b>. Correct alignment provides the reference frame against which positional requirements are evaluated.</p>
+    </div>
+    <div class="challenge">
+      <h3>02 / CONSTRUCTED REFERENCE PLANES</h3>
+      <p>CAD-derived nominal points were used in Aberlink to <b>construct reference geometry</b>. This allowed measured circular features to be related to the appropriate geometric reference.</p>
+    </div>
+    <div class="challenge">
+      <h3>03 / HOLES ON CURVED GEOMETRY</h3>
+      <p>The holes were measured as <b>circles</b> and related/projected to the constructed planes rather than treating the contoured surface as inherently planar.</p>
+    </div>
+    <div class="challenge">
+      <h3>04 / POSITIONAL TOLERANCE</h3>
+      <p>The hole pattern included <b>position requirements</b>; the program therefore needed correct datum referencing and nominal-location comparison without exposing drawing-specific values.</p>
+    </div>
+  </div>
+
+  <div class="access-strip">
+    <div class="access-title"><span>PROBE ACCESS &amp; PATH PLANNING</span></div>
+    <div class="access-copy"><b>Probe orientation → stylus accessibility → approach direction → feature access → collision clearance → measurement sequence.</b> The component required physical elevation on the fixture so underside datum/reference surfaces could be reached and measured rather than relying on the granite table as a substitute reference. The curved geometry also required deliberate approach and collision-avoidance planning around the internal features.</div>
+  </div>
+
+  <div class="process-section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">CAD Review</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">Datum Establishment</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Nominal Coordinate Extraction</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Feature Construction</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">Probe Access Planning</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">Hole Measurement</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">07</span><span class="step-label">GD&amp;T Evaluation</span></div>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Programming</span><span class="tech-item">Aberlink 3D</span><span class="tech-item">SOLIDWORKS</span><span class="tech-item">Datum Reference Frame</span><span class="tech-item">CAD Nominals</span><span class="tech-item">XYZ Coordinates</span><span class="tech-item">Feature Construction</span><span class="tech-item">Probe Accessibility</span><span class="tech-item">Position Tolerance</span><span class="tech-item">Profile Evaluation</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+    <span class="foot-right">PAGE <b>04</b> &nbsp;/&nbsp; CMM&ndash;CAD&ndash;04</span>
+  </div>
+</div>
+</body>
+</html>

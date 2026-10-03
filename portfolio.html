@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>CMM Programming Portfolio</title>
+
+
+    <style>
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('assets/InterStatic-Regular.ttf');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('assets/InterStatic-SemiBold.ttf');
+            font-weight: 600;
+        }
+
+        @font-face {
+            font-family: 'Plex Mono';
+            src: url('assets/IBMPlexMono-Regular.ttf');
+        }
+
+        @font-face {
+            font-family: 'Plex Mono';
+            src: url('assets/IBMPlexMono-SemiBold.ttf');
+            font-weight: 600;
+        }
+
+
+        :root {
+
+            --bg: #FAFAF7;
+            --ink: #1B1B1E;
+            --soft: #58585E;
+            --faint: #97969C;
+            --line: #DBD9D2;
+            --strong: #C7C4BB;
+            --accent: #AD5A2B;
+            --paper: #F1F0EC;
+
+        }
+
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+
+        html,
+        body {
+
+            width: 100%;
+            min-height: 100%;
+
+            background: var(--bg);
+
+            color: var(--ink);
+
+            font-family: 'Inter', Arial, sans-serif;
+
+        }
+
+
+        body {
+
+            display: flex;
+            flex-direction: column;
+
+        }
+
+
+        /* ==========================
+           TOP BAR
+        ========================== */
+
+        .topbar {
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            border-bottom: 1px solid var(--line);
+
+            background: rgba(250,250,247,0.96);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+
+        .brand {
+
+            font-family: 'Plex Mono';
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+
+            color: var(--faint);
+
+        }
+
+
+        .home-link {
+
+            color: var(--ink);
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            border-bottom: 1px solid var(--accent);
+
+            padding-bottom: 4px;
+
+        }
+
+
+        /* ==========================
+           CONTROLS
+        ========================== */
+
+        .controls {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            padding: 22px 25px 18px;
+
+            border-bottom: 1px solid var(--line);
+
+        }
+
+
+        .nav-button {
+
+            border: 1px solid var(--strong);
+
+            background: transparent;
+
+            color: var(--ink);
+
+            padding: 10px 18px;
+
+            font-family: 'Inter';
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+        }
+
+
+        .nav-button:hover {
+
+            background: var(--ink);
+
+            color: white;
+
+            border-color: var(--ink);
+
+        }
+
+
+        .page-counter {
+
+            font-family: 'Plex Mono';
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            color: var(--soft);
+
+            min-width: 100px;
+
+            text-align: center;
+
+        }
+
+
+        /* ==========================
+           VIEWER
+        ========================== */
+
+        .viewer {
+
+            flex: 1;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
+            padding: 25px 20px 40px;
+
+            background: #E8E7E2;
+
+            overflow: auto;
+
+        }
+
+
+        .page-frame {
+
+            width: min(1200px, 100%);
+
+            aspect-ratio: 297 / 210;
+
+            background: white;
+
+            box-shadow:
+                0 10px 35px rgba(0,0,0,0.12);
+
+            overflow: hidden;
+
+        }
+
+
+        iframe {
+
+            width: 100%;
+
+            height: 100%;
+
+            border: none;
+
+            display: block;
+
+        }
+
+
+        /* ==========================
+           PAGE SELECTOR
+        ========================== */
+
+        .page-selector {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+
+            padding: 15px 20px 20px;
+
+            background: var(--bg);
+
+            border-top: 1px solid var(--line);
+
+        }
+
+
+        .page-number {
+
+            width: 34px;
+
+            height: 30px;
+
+            border: 1px solid var(--line);
+
+            background: transparent;
+
+            color: var(--soft);
+
+            font-family: 'Plex Mono';
+
+            font-size: 9px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+        }
+
+
+        .page-number:hover {
+
+            border-color: var(--accent);
+
+            color: var(--accent);
+
+        }
+
+
+        .page-number.active {
+
+            background: var(--accent);
+
+            border-color: var(--accent);
+
+            color: white;
+
+        }
+
+
+        /* ==========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 800px) {
+
+            .topbar {
+
+                padding: 0 18px;
+
+            }
+
+            .brand {
+
+                font-size: 8px;
+
+                letter-spacing: 1.3px;
+
+            }
+
+            .controls {
+
+                gap: 10px;
+
+            }
+
+            .nav-button {
+
+                padding: 9px 12px;
+
+            }
+
+            .viewer {
+
+                padding: 15px 10px 25px;
+
+            }
+
+            .page-frame {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================
+         TOP BAR
+    ========================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+            CMM PROGRAMMING / ENGINEERING PORTFOLIO
+        </div>
+
+        <a
+            class="home-link"
+            href="portfolio.html">
+
+            BACK TO PAGE 01
+
+        </a>
+
+    </header>
+
+
+    <!-- ==========================
+         NAVIGATION
+    ========================== -->
+
+    <div class="controls">
+
+        <button
+            class="nav-button"
+            id="previousButton">
+
+            ← PREVIOUS
+
+        </button>
+
+
+        <div
+            class="page-counter"
+            id="pageCounter">
+
+            PAGE 01 / 10
+
+        </div>
+
+
+        <button
+            class="nav-button"
+            id="nextButton">
+
+            NEXT →
+
+        </button>
+
+    </div>
+
+
+    <!-- ==========================
+         PORTFOLIO VIEWER
+    ========================== -->
+
+    <main class="viewer">
+
+        <div class="page-frame">
+
+            <iframe
+                id="portfolioFrame"
+                src="04%20CMM%20Programming.html"
+                title="CMM Portfolio Page">
+
+            </iframe>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==========================
+         PAGE SELECTOR
+    ========================== -->
+
+    <div
+        class="page-selector"
+        id="pageSelector">
+
+    </div>
+
+
+    <script>
+
+
+        /*
+        =====================================================
+        CMM PORTFOLIO PAGE MAP
+
+        Public page number → actual HTML filename
+        =====================================================
+        */
+
+
+        const pages = [
+
+            {
+                number: 1,
+                file: "04%20CMM%20Programming.html"
+            },
+
+            {
+                number: 2,
+                file: "05%20CMM%20Programming.html"
+            },
+
+            {
+                number: 3,
+                file: "06%20CMM%20Programming.html"
+            },
+
+            {
+                number: 4,
+                file: "07%20CMM%20Programming.html"
+            },
+
+            {
+                number: 5,
+                file: "08%20CMM%20Programming.html"
+            },
+
+            {
+                number: 6,
+                file: "09%20CMM%20Programming.html"
+            },
+
+            {
+                number: 7,
+                file: "10%20CMM%20Programming.html"
+            },
+
+            {
+                number: 8,
+                file: "11%20CMM%20Programming.html"
+            },
+
+            {
+                number: 9,
+                file: "12%20CMM%20Programming.html"
+            },
+
+            {
+                number: 10,
+                file: "13%20CMM%20Programming.html"
+            }
+
+        ];
+
+
+        let currentPage = 1;
+
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const requestedPage = parseInt(urlParams.get("page"), 10);
+
+        if (
+            !isNaN(requestedPage) &&
+            requestedPage >= 1 &&
+            requestedPage <= pages.length
+        ) {
+            currentPage = requestedPage;
+        }
+
+
+        const frame =
+            document.getElementById("portfolioFrame");
+
+
+        const counter =
+            document.getElementById("pageCounter");
+
+
+        const previousButton =
+            document.getElementById("previousButton");
+
+
+        const nextButton =
+            document.getElementById("nextButton");
+
+
+        const selector =
+            document.getElementById("pageSelector");
+
+
+        /*
+        =====================================================
+        LOAD PAGE
+        =====================================================
+        */
+
+        function loadPage(pageNumber) {
+
+            currentPage = pageNumber;
+
+
+            const page =
+                pages[currentPage - 1];
+
+
+            frame.src = page.file;
+
+
+            counter.textContent =
+                `PAGE ${String(currentPage).padStart(2, "0")} / 10`;
+
+
+            updateButtons();
+
+
+            updatePageSelector();
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /*
+        =====================================================
+        PREVIOUS / NEXT
+        =====================================================
+        */
+
+        function updateButtons() {
+
+            previousButton.disabled =
+                currentPage === 1;
+
+
+            nextButton.disabled =
+                currentPage === pages.length;
+
+
+            previousButton.style.opacity =
+                currentPage === 1 ? "0.4" : "1";
+
+
+            nextButton.style.opacity =
+                currentPage === pages.length ? "0.4" : "1";
+
+        }
+
+
+        previousButton.addEventListener(
+            "click",
+            function () {
+
+                if (currentPage > 1) {
+
+                    loadPage(currentPage - 1);
+
+                }
+
+            }
+        );
+
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                if (currentPage < pages.length) {
+
+                    loadPage(currentPage + 1);
+
+                }
+
+            }
+        );
+
+
+        /*
+        =====================================================
+        PAGE NUMBER BUTTONS
+        =====================================================
+        */
+
+        function createPageSelector() {
+
+            selector.innerHTML = "";
+
+
+            pages.forEach(function(page) {
+
+                const button =
+                    document.createElement("button");
+
+
+                button.className =
+                    "page-number";
+
+
+                button.textContent =
+                    String(page.number).padStart(2, "0");
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        loadPage(page.number);
+
+                    }
+                );
+
+
+                selector.appendChild(button);
+
+            });
+
+
+            updatePageSelector();
+
+        }
+
+
+        function updatePageSelector() {
+
+            const buttons =
+                selector.querySelectorAll(
+                    ".page-number"
+                );
+
+
+            buttons.forEach(function(button, index) {
+
+                button.classList.toggle(
+                    "active",
+                    index + 1 === currentPage
+                );
+
+            });
+
+        }
+
+
+        /*
+        =====================================================
+        KEYBOARD NAVIGATION
+        =====================================================
+        */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "ArrowLeft") {
+
+                    if (currentPage > 1) {
+
+                        loadPage(currentPage - 1);
+
+                    }
+
+                }
+
+
+                if (event.key === "ArrowRight") {
+
+                    if (currentPage < pages.length) {
+
+                        loadPage(currentPage + 1);
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /*
+        =====================================================
+        INITIALISE
+        =====================================================
+        */
+
+        createPageSelector();
+
+        loadPage(1);
+
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>01 / CMM Programming</title>
+<style>
+@page{ size:297mm 210mm; margin:0; }
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Light.ttf');font-weight:600}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Regular.ttf');font-weight:700}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Medium.ttf');font-weight:800}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-SemiBold.ttf');font-weight:900}
+@font-face{font-family:'Inter';src:url('assets/InterStatic-Bold.ttf');font-weight:1000}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Regular.ttf');font-weight:700}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-Medium.ttf');font-weight:800}
+@font-face{font-family:'Plex Mono';src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:900}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--soft:#58585E;--faint:#97969C;--line:#DBD9D2;--strong:#C7C4BB;--accent:#AD5A2B;--paper:#F1F0EC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:297mm;height:210mm;background:var(--bg);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:13mm 15mm 10mm;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:5mm}
+.header-left{display:flex;align-items:flex-end}.proj-number{font-family:'Plex Mono';font-weight:500;font-size:30px;color:var(--accent);line-height:1;padding-right:5mm;margin-right:5mm;border-right:1px solid var(--strong)}
+.title-stack{line-height:1.1}.kicker{font-family:'Plex Mono';font-size:9px;letter-spacing:2px;color:var(--faint);font-weight:500;margin-bottom:2mm;display:block}.title-stack h1{font-size:21.5px;font-weight:600;letter-spacing:.25px;text-transform:uppercase;margin-bottom:1.8mm}.subtitle{font-size:12.2px;color:var(--soft);letter-spacing:.1px}
+.meta-strip{display:flex;align-items:flex-end}.meta-field{padding:0 5mm;border-left:1px solid var(--line);text-align:left}.meta-field:last-child{padding-right:0}.meta-label{font-family:'Plex Mono';font-size:8.5px;letter-spacing:1.5px;color:var(--faint);font-weight:500;display:block;margin-bottom:1.6mm}.meta-value{font-size:13.3px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
+.rule{height:1px;background:var(--strong);width:100%}.rule.accent-tick{position:relative}.rule.accent-tick:before{content:'';position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+.visual-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:6mm;margin-top:6mm;height:66mm;min-height:0}
+.visual-left,.visual-right{min-height:0}.visual-left{display:block}.visual-right{display:grid;grid-template-rows:42mm 1fr;gap:2.5mm}
+.frame{position:relative;overflow:hidden;background:#EFEDE8}.frame img{width:100%;height:100%;object-fit:cover;display:block}.support-frame img{object-fit:contain;background:#EFEDE8}.hero-frame{height:49mm}.support-frame{height:39mm}
+.caption{display:flex;align-items:baseline;gap:2mm;padding-top:1.5mm}.cap-num{font-family:'Plex Mono';font-size:10px;font-weight:600;color:var(--accent);flex-shrink:0}.cap-text{font-size:8px;color:var(--soft);letter-spacing:.05px}.cap-text b{color:var(--ink);font-weight:600}
+.logic-panel{border-top:1px solid var(--line);padding-top:2mm;display:grid;grid-template-columns:1.1fr 1fr;gap:4mm;min-height:0}.logic-copy{font-size:7.7px;line-height:1.22;color:var(--soft)}.logic-copy p+p{margin-top:1.2mm}.logic-title{font-family:'Plex Mono';font-size:8.5px;letter-spacing:1.5px;color:var(--ink);font-weight:600;margin-bottom:1.6mm}.logic-copy b{color:var(--ink);font-weight:600}
+.axis-graphic{position:relative;border-left:1px solid var(--line);padding-left:4mm;min-height:17mm}.axis-svg{width:100%;height:16mm;display:block}.axis-note{font-family:'Plex Mono';font-size:7.5px;letter-spacing:1px;color:var(--faint);margin-top:-1mm}
+.section{margin-top:2.5mm}.section-label{font-family:'Plex Mono';font-size:9px;font-weight:500;letter-spacing:2px;color:var(--faint);margin-bottom:3mm;display:block}.alignment-section .section-label,.gdt-section .section-label{color:var(--ink);font-weight:600}
+.datum-row{display:grid;grid-template-columns:1.25fr .75fr;gap:5mm;border-top:1px solid var(--line);padding-top:2.2mm}.datum-copy{font-size:8.5px;line-height:1.28;color:var(--soft)}.datum-copy b{color:var(--ink);font-weight:600}.datum-seq{display:flex;align-items:center;gap:2.3mm;margin-top:1.6mm;font-family:'Plex Mono';font-size:7.5px;letter-spacing:.5px;color:var(--ink)}.datum-box{border:1px solid var(--strong);padding:1.2mm 1.6mm;background:transparent}.datum-arrow{color:var(--accent);font-size:11px}.ph10-spec{border-left:1px solid var(--line);padding-left:4mm;font-size:8.3px;color:var(--soft);line-height:1.42}.ph10-spec b{color:var(--ink)}
+.gdt-section{margin-top:2.2mm}.gdt-strip{display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.gdt-item{padding:1.3mm 1.2mm 1.2mm;border-right:1px solid var(--line);min-width:0}.gdt-item:last-child{border-right:none}.gdt-group{font-family:'Plex Mono';font-size:6.5px;letter-spacing:1px;color:var(--faint);margin-bottom:1.1mm;text-transform:uppercase}.gdt-symbol{font-size:14px;line-height:1;margin-bottom:.8mm;font-family:'Noto Sans','Inter',sans-serif}.gdt-name{font-size:6.2px;line-height:1.12;color:var(--soft);font-weight:500}
+.process-seq{display:flex;align-items:center;flex-wrap:nowrap}.process-step{display:flex;align-items:baseline;white-space:nowrap}.step-num{font-family:'Plex Mono';font-size:10px;font-weight:600;color:var(--accent);margin-right:2mm}.step-label{font-size:8.9px;font-weight:500;letter-spacing:.05px}.process-arrow{color:var(--strong);margin:0 2.6mm;font-size:12px}
+.tech-row{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:1.5mm}.tech-item{font-size:9.6px;color:var(--soft);font-weight:400;padding-right:2.7mm;margin-right:2.7mm;border-right:1px solid var(--line)}.tech-item:last-child{border-right:none;margin-right:0;padding-right:0}.tech-item.primary{color:var(--ink);font-weight:600}
+.footer{margin-top:2mm;padding-top:3mm;display:flex;justify-content:space-between;align-items:center}.foot-left,.foot-right{font-family:'Plex Mono';font-size:8px;letter-spacing:1.8px;color:var(--faint);font-weight:500}.foot-right b{color:var(--soft)}
+
+/* =========================================================
+   VISUAL OPTIMISATION — CONTENT PRESERVED
+   Layout-only refinement against the approved benchmark.
+   ========================================================= */
+.page{padding:10mm 14mm 8mm}
+.header{padding-bottom:4mm;min-height:27mm}
+.proj-number{font-size:32px;padding-right:4mm;margin-right:4mm}
+.kicker{font-size:8.5px;letter-spacing:2.2px;margin-bottom:1.5mm}
+.title-stack h1{font-size:25px;line-height:1.02;margin-bottom:1.5mm;letter-spacing:.35px}
+.subtitle{font-size:12.8px;line-height:1.2}
+.meta-strip{margin-left:8mm}
+.meta-field{padding:0 4mm}
+.meta-label{font-size:8px;margin-bottom:1.2mm}
+.meta-value{font-size:12px}
+
+/* Give the photographs substantially more visual weight. */
+.visual-grid{grid-template-columns:1.22fr 1fr;gap:5mm;margin-top:4.5mm;height:82mm}
+.visual-left{min-width:0}
+.visual-right{grid-template-rows:53mm 1fr;gap:2.5mm;min-width:0}
+.hero-frame{height:62mm}
+.support-frame{height:47mm}
+.frame{background:#EFEDE8}
+
+/* Captions remain the same content, but become readable at normal viewing size. */
+.caption{gap:2mm;padding-top:1.5mm}
+.cap-num{font-size:9.5px}
+.cap-text{font-size:8.8px;line-height:1.22}
+
+/* Preserve all existing logic text; simply give it enough room to breathe. */
+.logic-panel{padding-top:1.8mm;grid-template-columns:1.12fr .88fr;gap:3.5mm}
+.logic-copy{font-size:8.4px;line-height:1.27}
+.logic-copy p+p{margin-top:1.3mm}
+.logic-title{font-size:8.4px;margin-bottom:1.3mm}
+.axis-graphic{padding-left:3.5mm}
+.axis-svg{height:17mm}
+.axis-note{font-size:7.2px}
+
+/* Lower information is larger and more legible, while spacing is tightened. */
+.section{margin-top:2.1mm}
+.section-label{font-size:8.5px;letter-spacing:1.9px;margin-bottom:2mm}
+.datum-row{gap:4mm;padding-top:1.8mm}
+.datum-copy{font-size:8.9px;line-height:1.3}
+.datum-seq{gap:1.8mm;margin-top:1.3mm;font-size:7.2px}
+.datum-box{padding:1mm 1.3mm}
+.ph10-spec{padding-left:3.5mm;font-size:8.7px;line-height:1.35}
+
+.gdt-section{margin-top:1.8mm}
+.gdt-item{padding:1.1mm 1mm 1mm}
+.gdt-group{font-size:6.2px;margin-bottom:.8mm}
+.gdt-symbol{font-size:14px;margin-bottom:.6mm}
+.gdt-name{font-size:6.4px}
+
+.process-seq{justify-content:space-between;width:100%}
+.step-num{font-size:9.5px;margin-right:1.5mm}
+.step-label{font-size:8.6px}
+.process-arrow{margin:0 1.6mm;font-size:11px}
+
+.tech-row{row-gap:1.2mm}
+.tech-item{font-size:8.9px;padding-right:2.2mm;margin-right:2.2mm}
+
+.footer{margin-top:1.5mm;padding-top:2.5mm}
+.foot-left,.foot-right{font-size:7.6px;letter-spacing:1.6px}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="proj-number">01</div>
+      <div class="title-stack">
+        <span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+        <h1>CMM Programming</h1>
+        <div class="subtitle">Metrology workflow from stylus selection to coordinate-system establishment</div>
+      </div>
+    </div>
+    <div class="meta-strip">
+      <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+    </div>
+  </div>
+  <div class="rule accent-tick"></div>
+
+  <div class="visual-grid">
+    <div class="visual-left">
+      <div class="frame hero-frame"><img src="assets/stylus-configurations.jpg" alt="Renishaw CMM stylus configurations"></div>
+      <div class="caption"><span class="cap-num">01</span><span class="cap-text"><b>STYLUS SELECTION</b> - Ball diameter and stem length balance feature access, clearance, reach and measurement stability; where practical, the configuration is kept short and stiff.</span></div>
+    </div>
+    <div class="visual-right">
+      <div>
+        <div class="frame support-frame"><img src="assets/ph10t-probe-head.jpg" alt="Renishaw PH10T motorised indexing probe head"></div>
+        <div class="caption"><span class="cap-num">02</span><span class="cap-text"><b>PH10T PROBE HEAD</b> - Motorised indexing head for repeatable probe reorientation.</span></div>
+      </div>
+      <div class="logic-panel">
+        <div class="logic-copy">
+          <div class="logic-title">CMM COORDINATE SYSTEM</div>
+          <p><b>Machine coordinates</b> define the CMM's Cartesian X, Y and Z reference frame. During programming, measured features are used to establish a <b>part coordinate system</b> aligned to the component's datum structure.</p>
+          <p>The part coordinate system then becomes the reference for subsequent feature measurement and GD&amp;T evaluation.</p>
+        </div>
+        <div class="axis-graphic">
+          <svg class="axis-svg" viewBox="0 0 220 105" aria-label="Cartesian CMM coordinate axes">
+            <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#AD5A2B"/></marker></defs>
+            <line x1="70" y1="78" x2="180" y2="78" stroke="#C7C4BB" stroke-width="1" marker-end="url(#arrow)"/>
+            <line x1="70" y1="78" x2="25" y2="43" stroke="#C7C4BB" stroke-width="1" marker-end="url(#arrow)"/>
+            <line x1="70" y1="78" x2="70" y2="12" stroke="#C7C4BB" stroke-width="1" marker-end="url(#arrow)"/>
+            <circle cx="70" cy="78" r="3" fill="#AD5A2B"/>
+            <text x="185" y="82" font-family="Plex Mono" font-size="10" fill="#58585E">X</text>
+            <text x="17" y="40" font-family="Plex Mono" font-size="10" fill="#58585E">Y</text>
+            <text x="75" y="14" font-family="Plex Mono" font-size="10" fill="#58585E">Z</text>
+            <text x="77" y="96" font-family="Plex Mono" font-size="8" fill="#97969C">PART ZERO / ORIGIN</text>
+          </svg>
+          <div class="axis-note">CARTESIAN REFERENCE FRAME</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section alignment-section">
+    <span class="section-label">PART ALIGNMENT &amp; DATUM ESTABLISHMENT</span>
+    <div class="datum-row">
+      <div class="datum-copy">
+        The component is aligned (when applicable) to the <b>engineering drawing datum structure</b>: primary plane → secondary feature → tertiary / rotational reference. This establishes the <b>part coordinate system</b> used for subsequent feature measurement and GD&amp;T evaluation.
+        <div class="datum-seq"><span class="datum-box">PRIMARY PLANE</span><span class="datum-arrow">→</span><span class="datum-box">SECONDARY FEATURE</span><span class="datum-arrow">→</span><span class="datum-box">TERTIARY / ROTATIONAL REF.</span><span class="datum-arrow">→</span><span class="datum-box">PART COORDINATE SYSTEM</span></div>
+      </div>
+      <div class="ph10-spec">
+        <b>PH10T</b> &nbsp; A 0°–105° &nbsp;·&nbsp; B −180° to +180° &nbsp;·&nbsp; 7.5° steps &nbsp;·&nbsp; 720 positions
+      </div>
+    </div>
+  </div>
+
+  <div class="gdt-section">
+    <span class="section-label">GD&amp;T REFERENCE</span>
+    <div class="gdt-strip">
+      <div class="gdt-item"><div class="gdt-group">FORM</div><div class="gdt-symbol">⏤</div><div class="gdt-name">Straightness</div></div>
+      <div class="gdt-item"><div class="gdt-group">FORM</div><div class="gdt-symbol">⏥</div><div class="gdt-name">Flatness</div></div>
+      <div class="gdt-item"><div class="gdt-group">FORM</div><div class="gdt-symbol">○</div><div class="gdt-name">Circularity</div></div>
+      <div class="gdt-item"><div class="gdt-group">FORM</div><div class="gdt-symbol">⌭</div><div class="gdt-name">Cylindricity</div></div>
+      <div class="gdt-item"><div class="gdt-group">ORIENT.</div><div class="gdt-symbol">∥</div><div class="gdt-name">Parallelism</div></div>
+      <div class="gdt-item"><div class="gdt-group">ORIENT.</div><div class="gdt-symbol">⊥</div><div class="gdt-name">Perpendicularity</div></div>
+      <div class="gdt-item"><div class="gdt-group">ORIENT.</div><div class="gdt-symbol">∠</div><div class="gdt-name">Angularity</div></div>
+      <div class="gdt-item"><div class="gdt-group">LOCATION</div><div class="gdt-symbol">⌖</div><div class="gdt-name">Position</div></div>
+      <div class="gdt-item"><div class="gdt-group">PROFILE</div><div class="gdt-symbol">⌒</div><div class="gdt-name">Profile of a Line</div></div>
+      <div class="gdt-item"><div class="gdt-group">PROFILE</div><div class="gdt-symbol">⌓</div><div class="gdt-name">Profile of a Surface</div></div>
+      <div class="gdt-item"><div class="gdt-group">RUNOUT</div><div class="gdt-symbol">↗</div><div class="gdt-name">Circular Runout</div></div>
+      <div class="gdt-item"><div class="gdt-group">RUNOUT</div><div class="gdt-symbol">⇗</div><div class="gdt-name">Total Runout</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">PROCESS EXPOSURE</span>
+    <div class="process-seq">
+      <div class="process-step"><span class="step-num">01</span><span class="step-label">Stylus Selection</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">02</span><span class="step-label">Probe Qualification</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">03</span><span class="step-label">Part Alignment</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">04</span><span class="step-label">Datum Establishment</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">05</span><span class="step-label">Feature Measurement</span></div><span class="process-arrow">→</span>
+      <div class="process-step"><span class="step-num">06</span><span class="step-label">GD&amp;T Evaluation</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">TECHNICAL EXPOSURE</span>
+    <div class="tech-row">
+      <span class="tech-item primary">CMM Programming</span><span class="tech-item">Renishaw PH10T</span><span class="tech-item">Stylus Selection</span><span class="tech-item">Datum Reference Frame</span><span class="tech-item">Part Alignment</span><span class="tech-item">XYZ Coordinate System</span><span class="tech-item">Probe Qualification</span><span class="tech-item">GD&amp;T</span><span class="tech-item">Dimensional Inspection</span>
+    </div>
+  </div>
+
+  <div class="rule footer-rule"></div>
+  <div class="footer"><span class="foot-left">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span><span class="foot-right">PAGE <b>01</b> &nbsp;/&nbsp; CMM&ndash;PROBE&ndash;01</span></div>
+</div>
+</body>
+</html>

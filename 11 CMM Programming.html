@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>08 / CMM Programming - Fixture Metrology &amp; CAD/CAM Process Feedback</title>
+<style>
+@page{size:297mm 210mm;margin:0}
+@font-face{font-family:Inter;src:url('assets/InterStatic-Light.ttf');font-weight:300}
+@font-face{font-family:Inter;src:url('assets/InterStatic-Regular.ttf');font-weight:400}
+@font-face{font-family:Inter;src:url('assets/InterStatic-Medium.ttf');font-weight:500}
+@font-face{font-family:Inter;src:url('assets/InterStatic-SemiBold.ttf');font-weight:600}
+@font-face{font-family:Inter;src:url('assets/InterStatic-Bold.ttf');font-weight:700}
+@font-face{font-family:PlexMono;src:url('assets/IBMPlexMono-Regular.ttf');font-weight:400}
+@font-face{font-family:PlexMono;src:url('assets/IBMPlexMono-Medium.ttf');font-weight:500}
+@font-face{font-family:PlexMono;src:url('assets/IBMPlexMono-SemiBold.ttf');font-weight:600}
+:root{--bg:#FAFAF7;--ink:#1B1B1E;--soft:#58585E;--faint:#97969C;--line:#D9D7D0;--strong:#C5C2B9;--accent:#AD5A2B;--paper:#F0EFEA}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:297mm;height:210mm;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.page{width:297mm;height:210mm;padding:11mm 15mm 8mm;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:4mm}
+.header-left{display:flex;align-items:flex-end;min-width:0}
+.proj-number{font-family:PlexMono;font-size:29px;font-weight:500;color:var(--accent);line-height:1;padding-right:4.5mm;margin-right:4.5mm;border-right:1px solid var(--strong)}
+.title-stack{max-width:128mm;line-height:1.04}
+.kicker{font-family:PlexMono;font-size:8.4px;letter-spacing:1.9px;color:var(--faint);display:block;margin-bottom:1.7mm}
+h1{font-size:18px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;margin-bottom:1.5mm}
+.subtitle{font-size:10px;color:var(--soft)}
+.meta-strip{display:flex;align-items:flex-end}
+.meta-field{padding:0 3.2mm;border-left:1px solid var(--line)}
+.meta-field:last-child{padding-right:0}
+.meta-label{font-family:PlexMono;font-size:7.5px;letter-spacing:1.2px;color:var(--faint);display:block;margin-bottom:1.2mm}
+.meta-value{font-size:10.1px;font-weight:600;white-space:nowrap}
+.rule{height:1px;background:var(--strong);position:relative}
+.rule:before{content:"";position:absolute;left:0;top:-1px;width:14mm;height:2px;background:var(--accent)}
+.section-label{font-family:PlexMono;font-size:8.3px;letter-spacing:1.7px;font-weight:600;color:var(--accent);display:block}
+
+/* Large visual evidence */
+.hero-grid{margin-top:5mm;height:91mm;display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+.hero-card{min-width:0;display:grid;grid-template-rows:76mm 1fr;gap:2.5mm}
+.hero-frame{height:76mm;background:var(--paper);border:1px solid #E4E2DC;overflow:hidden;position:relative}
+.hero-frame img{width:100%;height:100%;object-fit:contain;display:block}
+.hero-caption{display:flex;gap:2mm;align-items:flex-start;padding-top:.4mm}
+.cap-num{font-family:PlexMono;font-size:9.2px;font-weight:600;color:var(--accent)}
+.cap-text{font-size:7.65px;line-height:1.2;color:var(--soft)}
+.cap-text b{color:var(--ink);font-weight:600}
+.marker{position:absolute;width:5mm;height:5mm;border:1px solid var(--accent);border-radius:50%;background:rgba(250,250,247,.95);color:var(--accent);font-family:PlexMono;font-size:6.8px;font-weight:600;display:flex;align-items:center;justify-content:center;z-index:3}
+.leader{position:absolute;height:1px;background:var(--accent);transform-origin:left center;z-index:2}
+.marker-label{position:absolute;font-family:PlexMono;font-size:6.1px;letter-spacing:.55px;color:var(--accent);background:rgba(250,250,247,.94);padding:.45mm .8mm;white-space:nowrap;z-index:4}
+
+/* Main CMM -> CAD/CAM story */
+.loop{margin-top:1.5mm;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.8mm 0 1.6mm;display:grid;grid-template-columns:1fr 47mm;gap:4mm;min-height:39mm}
+.loop-left{min-width:0}
+.loop-title{font-family:PlexMono;font-size:8.7px;letter-spacing:1.65px;font-weight:600;color:var(--accent);margin-bottom:1.7mm}
+.loop-flow{display:flex;align-items:center;justify-content:space-between;gap:1mm}
+.loop-node{border:1px solid var(--strong);height:16mm;flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5mm 1mm;font-family:PlexMono;font-size:6.7px;line-height:1.08;font-weight:600}
+.loop-arrow{font-family:PlexMono;font-size:10px;color:var(--accent);flex:0 0 auto}
+.loop-note{font-size:7.3px;line-height:1.2;color:var(--soft);margin-top:1.7mm}
+.loop-note b{color:var(--ink)}
+.loop-side{border-left:1px solid var(--line);padding-left:4mm;font-size:7.35px;line-height:1.22;color:var(--soft)}
+.loop-side .mini{font-family:PlexMono;font-size:7px;letter-spacing:1px;color:var(--accent);margin-bottom:1.3mm}
+.loop-side b{color:var(--ink)}
+
+/* Four compact engineering blocks */
+.challenge-grid{margin-top:1.4mm;display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.challenge{border-top:1px solid var(--line);padding-top:1.3mm}
+.challenge h3{font-family:PlexMono;font-size:7.05px;letter-spacing:.95px;color:var(--accent);margin-bottom:.9mm}
+.challenge p{font-size:6.9px;line-height:1.17;color:var(--soft)}
+.challenge b{color:var(--ink)}
+
+/* Feedback takeaway */
+.takeaway{margin-top:1.3mm;border-top:1.5px solid var(--accent);padding:1.3mm 0 1mm;display:grid;grid-template-columns:55mm 1fr;gap:4mm;align-items:center}
+.takeaway-title{font-family:PlexMono;font-size:9.2px;line-height:1.04;letter-spacing:1.25px;color:var(--accent);font-weight:600}
+.takeaway-copy{font-size:7.3px;line-height:1.2;color:var(--soft)}
+.takeaway-copy b{color:var(--ink)}
+
+/* Process / exposure */
+.process{margin-top:1mm}
+.process-flow{display:flex;align-items:center;white-space:nowrap}
+.step{display:flex;align-items:baseline}
+.num{font-family:PlexMono;font-size:8.8px;font-weight:600;color:var(--accent);margin-right:1.3mm}
+.label{font-size:7.8px;font-weight:500}
+.arrow{font-size:10px;color:var(--strong);margin:0 1.7mm}
+.tech{margin-top:.8mm}
+.tech-row{display:flex;flex-wrap:wrap}
+.tech-item{font-size:7.35px;color:var(--soft);padding-right:1.5mm;margin-right:1.5mm;border-right:1px solid var(--line)}
+.tech-item:last-child{border-right:0}
+.tech-item.primary{font-weight:600;color:var(--ink)}
+.footer{margin-top:auto;padding-top:2mm;border-top:1px solid var(--line);display:flex;justify-content:space-between}
+.foot{font-family:PlexMono;font-size:7.4px;letter-spacing:1.6px;color:var(--faint)}
+.foot b{color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="header">
+  <div class="header-left">
+    <div class="proj-number">08</div>
+    <div class="title-stack">
+      <span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+      <h1>CMM Programming</h1>
+      <div class="subtitle">Fixture Metrology &amp; CAD/CAM Process Feedback</div>
+    </div>
+  </div>
+  <div class="meta-strip">
+    <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+    <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">FIXTURE METROLOGY</span></div>
+    <div class="meta-field"><span class="meta-label">OUTPUT</span><span class="meta-value">ABERLINK DATA</span></div>
+    <div class="meta-field"><span class="meta-label">FEEDBACK</span><span class="meta-value">CAD / CAM</span></div>
+  </div>
+</header>
+<div class="rule"></div>
+
+<section class="hero-grid">
+  <div class="hero-card">
+    <div class="hero-frame">
+      <img src="assets/01_fixture_front.jpg" alt="Multi-part machining fixture with locating pins and fasteners">
+    </div>
+    <div class="hero-caption"><span class="cap-num">01</span><span class="cap-text"><b>MULTI-PART FIXTURE</b> - Locating features and fasteners position multiple component locations for a machining cycle. The fixture is treated here as a <b>measurement object</b>.</span></div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hero-frame">
+      <img src="assets/02_fixture_side.jpg" alt="Side view of multi-part machining fixture and locating geometry">
+    </div>
+    <div class="hero-caption"><span class="cap-num">02</span><span class="cap-text"><b>FIXTURE GEOMETRY</b> - The CMM captures measured relationships between locator positions, hole locations, diameters, orientations and other relevant reference features.</span></div>
+  </div>
+</section>
+
+<section class="loop">
+  <div class="loop-left">
+    <div class="loop-title">CMM → CAD / CAM / MANUFACTURING FEEDBACK</div>
+    <div class="loop-flow">
+      <div class="loop-node">PHYSICAL<br>FIXTURE</div><span class="loop-arrow">→</span>
+      <div class="loop-node">CMM<br>MEASUREMENT</div><span class="loop-arrow">→</span>
+      <div class="loop-node">ACTUAL FEATURE<br>LOCATIONS</div><span class="loop-arrow">→</span>
+      <div class="loop-node">ABERLINK DRAWING /<br>MEASUREMENT DATA</div><span class="loop-arrow">→</span>
+      <div class="loop-node">CAD / CAM<br>DEVELOPMENT</div><span class="loop-arrow">→</span>
+      <div class="loop-node">CNC<br>MACHINING</div>
+    </div>
+    <div class="loop-note"><b>Measured fixture geometry</b> was supplied as engineering information to support the machining setup and CAD/CAM program development. CMM measurement did not directly control the CNC machine.</div>
+  </div>
+  <div class="loop-side">
+    <div class="mini">SIX-PART FIXTURE / BATCH MANUFACTURING</div>
+    <p><b>One fixture → six component locations → one CNC cycle.</b></p>
+    <p style="margin-top:1.2mm">The inspection strategy captured the relevant fixture geometry across the component locations so the machining team could work from measured positional relationships.</p>
+  </div>
+</section>
+
+<section class="challenge-grid">
+  <article class="challenge">
+    <h3>01 / FIXTURE METROLOGY</h3>
+    <p>Measure <b>locator position, hole locations, feature diameters, angular relationships, orientations and feature-to-feature distances</b> without inventing numerical values.</p>
+  </article>
+  <article class="challenge">
+    <h3>02 / COORDINATE FRAME</h3>
+    <p>Establish the measured spatial relationship between the fixture's reference geometry and locating features; keep <b>measured geometry</b> distinct from nominal CAD.</p>
+  </article>
+  <article class="challenge">
+    <h3>03 / ABERLINK OUTPUT</h3>
+    <p>Detailed <b>Aberlink drawings / measurement outputs</b> documented relevant distances, centres, diameters, angles, orientations and feature relationships for the machining team.</p>
+  </article>
+  <article class="challenge">
+    <h3>04 / MANUFACTURING FEEDBACK</h3>
+    <p>The measured information supported <b>CAM setup and feature-location decisions</b>, reducing uncertainty when transferring the physical fixture into the programming environment.</p>
+  </article>
+</section>
+
+<section class="takeaway">
+  <div class="takeaway-title">MEASUREMENT DATA →<br>MANUFACTURING CONFIDENCE</div>
+  <div class="takeaway-copy">Accurate fixture measurement supported the six-axis milling team leader in developing the CAD/CAM machining setup. The objective was to improve the likelihood of <b>right-first-time machining</b> by reducing uncertainty in the measured fixture geometry - not by claiming that CMM measurement alone guaranteed first-pass acceptance.</div>
+</section>
+
+<section class="process">
+  <span class="section-label">PROCESS EXPOSURE</span>
+  <div class="process-flow">
+    <div class="step"><span class="num">01</span><span class="label">Fixture Review</span></div><span class="arrow">→</span>
+    <div class="step"><span class="num">02</span><span class="label">Datum Establishment</span></div><span class="arrow">→</span>
+    <div class="step"><span class="num">03</span><span class="label">Locator Measurement</span></div><span class="arrow">→</span>
+    <div class="step"><span class="num">04</span><span class="label">Feature Verification</span></div><span class="arrow">→</span>
+    <div class="step"><span class="num">05</span><span class="label">Aberlink Documentation</span></div><span class="arrow">→</span>
+    <div class="step"><span class="num">06</span><span class="label">CAD/CAM Feedback</span></div>
+  </div>
+</section>
+
+<section class="tech">
+  <span class="section-label">TECHNICAL EXPOSURE</span>
+  <div class="tech-row">
+    <span class="tech-item primary">Fixture Metrology</span>
+    <span class="tech-item">CMM Programming</span>
+    <span class="tech-item">Aberlink 3D</span>
+    <span class="tech-item">Datum Reference</span>
+    <span class="tech-item">Coordinate Frames</span>
+    <span class="tech-item">Locator Position</span>
+    <span class="tech-item">Feature Location</span>
+    <span class="tech-item">Dimensional Verification</span>
+    <span class="tech-item">CAD/CAM Integration</span>
+    <span class="tech-item">Manufacturing Feedback</span>
+  </div>
+</section>
+
+<footer class="footer">
+  <span class="foot">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+  <span class="foot">PAGE <b>08</b> &nbsp;/&nbsp; CNC–FIXTURE–08</span>
+</footer>
+
+</div>
+</body>
+</html>

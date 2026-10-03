@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>07 / CMM Programming - Fixture Validation &amp; Measurement Repeatability</title>
+  <style>
+    @page {
+      size: 297mm 210mm;
+      margin: 0
+    }
+
+    @font-face {
+      font-family: Inter;
+      src: url('assets/InterStatic-Light.ttf');
+      font-weight: 300
+    }
+
+    @font-face {
+      font-family: Inter;
+      src: url('assets/InterStatic-Regular.ttf');
+      font-weight: 400
+    }
+
+    @font-face {
+      font-family: Inter;
+      src: url('assets/InterStatic-Medium.ttf');
+      font-weight: 500
+    }
+
+    @font-face {
+      font-family: Inter;
+      src: url('assets/InterStatic-SemiBold.ttf');
+      font-weight: 600
+    }
+
+    @font-face {
+      font-family: Inter;
+      src: url('assets/InterStatic-Bold.ttf');
+      font-weight: 700
+    }
+
+    @font-face {
+      font-family: PlexMono;
+      src: url('assets/IBMPlexMono-Regular.ttf');
+      font-weight: 400
+    }
+
+    @font-face {
+      font-family: PlexMono;
+      src: url('assets/IBMPlexMono-Medium.ttf');
+      font-weight: 500
+    }
+
+    @font-face {
+      font-family: PlexMono;
+      src: url('assets/IBMPlexMono-SemiBold.ttf');
+      font-weight: 600
+    }
+
+    :root {
+      --bg: #FAFAF7;
+      --ink: #1B1B1E;
+      --soft: #58585E;
+      --faint: #97969C;
+      --line: #D9D7D0;
+      --strong: #C5C2B9;
+      --accent: #AD5A2B;
+      --paper: #F0EFEA
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      width: 297mm;
+      height: 210mm;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased
+    }
+
+    .page {
+      width: 297mm;
+      height: 210mm;
+      padding: 11mm 15mm 8mm;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 4mm
+    }
+
+    .header-left {
+      display: flex;
+      align-items: flex-end;
+      min-width: 0
+    }
+
+    .proj-number {
+      font-family: PlexMono;
+      font-size: 29px;
+      font-weight: 500;
+      color: var(--accent);
+      line-height: 1;
+      padding-right: 4.5mm;
+      margin-right: 4.5mm;
+      border-right: 1px solid var(--strong)
+    }
+
+    .title-stack {
+      max-width: 128mm;
+      line-height: 1.04
+    }
+
+    .kicker {
+      font-family: PlexMono;
+      font-size: 8.4px;
+      letter-spacing: 1.9px;
+      color: var(--faint);
+      display: block;
+      margin-bottom: 1.7mm
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .2px;
+      text-transform: uppercase;
+      margin-bottom: 1.5mm
+    }
+
+    .subtitle {
+      font-size: 10px;
+      color: var(--soft)
+    }
+
+    .meta-strip {
+      display: flex;
+      align-items: flex-end
+    }
+
+    .meta-field {
+      padding: 0 3.2mm;
+      border-left: 1px solid var(--line)
+    }
+
+    .meta-field:last-child {
+      padding-right: 0
+    }
+
+    .meta-label {
+      font-family: PlexMono;
+      font-size: 7.5px;
+      letter-spacing: 1.2px;
+      color: var(--faint);
+      display: block;
+      margin-bottom: 1.2mm
+    }
+
+    .meta-value {
+      font-size: 10.1px;
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--strong);
+      position: relative
+    }
+
+    .rule:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -1px;
+      width: 14mm;
+      height: 2px;
+      background: var(--accent)
+    }
+
+    .section-label {
+      font-family: PlexMono;
+      font-size: 8.3px;
+      letter-spacing: 1.7px;
+      font-weight: 600;
+      color: var(--accent);
+      display: block
+    }
+
+    /* Large visual evidence */
+    .hero-grid {
+      margin-top: 5mm;
+      height: 91mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm
+    }
+
+    .hero-card {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 76mm 1fr;
+      gap: 2.5mm
+    }
+
+    .hero-frame {
+      height: 76mm;
+      background: var(--paper);
+      border: 1px solid #E4E2DC;
+      overflow: hidden;
+      position: relative
+    }
+
+    .hero-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block
+    }
+
+    .hero-caption {
+      display: flex;
+      gap: 2mm;
+      align-items: flex-start;
+      padding-top: .4mm
+    }
+
+    .cap-num {
+      font-family: PlexMono;
+      font-size: 9.2px;
+      font-weight: 600;
+      color: var(--accent)
+    }
+
+    .cap-text {
+      font-size: 7.65px;
+      line-height: 1.2;
+      color: var(--soft)
+    }
+
+    .cap-text b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .marker {
+      position: absolute;
+      width: 5mm;
+      height: 5mm;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      background: rgba(250, 250, 247, .95);
+      color: var(--accent);
+      font-family: PlexMono;
+      font-size: 6.8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3
+    }
+
+    .leader {
+      position: absolute;
+      height: 1px;
+      background: var(--accent);
+      transform-origin: left center;
+      z-index: 2
+    }
+
+    .marker-label {
+      position: absolute;
+      font-family: PlexMono;
+      font-size: 6.1px;
+      letter-spacing: .55px;
+      color: var(--accent);
+      background: rgba(250, 250, 247, .94);
+      padding: .45mm .8mm;
+      white-space: nowrap;
+      z-index: 4
+    }
+
+    /* Main CMM -> CAD/CAM story */
+    .loop {
+      margin-top: 1.5mm;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 1.8mm 0 1.6mm;
+      display: grid;
+      grid-template-columns: 1fr 47mm;
+      gap: 4mm;
+      min-height: 39mm
+    }
+
+    .loop-left {
+      min-width: 0
+    }
+
+    .loop-title {
+      font-family: PlexMono;
+      font-size: 8.7px;
+      letter-spacing: 1.65px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.7mm
+    }
+
+    .loop-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1mm
+    }
+
+    .loop-node {
+      border: 1px solid var(--strong);
+      height: 16mm;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5mm 1mm;
+      font-family: PlexMono;
+      font-size: 6.7px;
+      line-height: 1.08;
+      font-weight: 600
+    }
+
+    .loop-arrow {
+      font-family: PlexMono;
+      font-size: 10px;
+      color: var(--accent);
+      flex: 0 0 auto
+    }
+
+    .loop-note {
+      font-size: 7.3px;
+      line-height: 1.2;
+      color: var(--soft);
+      margin-top: 1.7mm
+    }
+
+    .loop-note b {
+      color: var(--ink)
+    }
+
+    .loop-side {
+      border-left: 1px solid var(--line);
+      padding-left: 4mm;
+      font-size: 7.35px;
+      line-height: 1.22;
+      color: var(--soft)
+    }
+
+    .loop-side .mini {
+      font-family: PlexMono;
+      font-size: 7px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 1.3mm
+    }
+
+    .loop-side b {
+      color: var(--ink)
+    }
+
+    /* Four compact engineering blocks */
+    .challenge-grid {
+      margin-top: 1.4mm;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4mm
+    }
+
+    .challenge {
+      border-top: 1px solid var(--line);
+      padding-top: 1.3mm
+    }
+
+    .challenge h3 {
+      font-family: PlexMono;
+      font-size: 7.05px;
+      letter-spacing: .95px;
+      color: var(--accent);
+      margin-bottom: .9mm
+    }
+
+    .challenge p {
+      font-size: 6.9px;
+      line-height: 1.17;
+      color: var(--soft)
+    }
+
+    .challenge b {
+      color: var(--ink)
+    }
+
+    /* Feedback takeaway */
+    .takeaway {
+      margin-top: 1.3mm;
+      border-top: 1.5px solid var(--accent);
+      padding: 1.3mm 0 1mm;
+      display: grid;
+      grid-template-columns: 55mm 1fr;
+      gap: 4mm;
+      align-items: center
+    }
+
+    .takeaway-title {
+      font-family: PlexMono;
+      font-size: 9.2px;
+      line-height: 1.04;
+      letter-spacing: 1.25px;
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .takeaway-copy {
+      font-size: 7.3px;
+      line-height: 1.2;
+      color: var(--soft)
+    }
+
+    .takeaway-copy b {
+      color: var(--ink)
+    }
+
+    /* Process / exposure */
+    .process {
+      margin-top: 1mm
+    }
+
+    .process-flow {
+      display: flex;
+      align-items: center;
+      white-space: nowrap
+    }
+
+    .step {
+      display: flex;
+      align-items: baseline
+    }
+
+    .num {
+      font-family: PlexMono;
+      font-size: 8.8px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-right: 1.3mm
+    }
+
+    .label {
+      font-size: 7.8px;
+      font-weight: 500
+    }
+
+    .arrow {
+      font-size: 10px;
+      color: var(--strong);
+      margin: 0 1.7mm
+    }
+
+    .tech {
+      margin-top: .8mm
+    }
+
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap
+    }
+
+    .tech-item {
+      font-size: 7.35px;
+      color: var(--soft);
+      padding-right: 1.5mm;
+      margin-right: 1.5mm;
+      border-right: 1px solid var(--line)
+    }
+
+    .tech-item:last-child {
+      border-right: 0
+    }
+
+    .tech-item.primary {
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 2mm;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between
+    }
+
+    .foot {
+      font-family: PlexMono;
+      font-size: 7.4px;
+      letter-spacing: 1.6px;
+      color: var(--faint)
+    }
+
+    .foot b {
+      color: var(--soft)
+    }
+
+    .hero-grid {
+      margin-top: 4.5mm;
+      height: 69mm;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm
+    }
+
+    .hero-card {
+      grid-template-rows: 59mm 1fr;
+      gap: 2mm
+    }
+
+    .hero-frame {
+      height: 59mm
+    }
+
+    .hero-frame img {
+      object-fit: contain
+    }
+
+    .repeatability {
+      margin-top: 2mm;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 2mm 0 1.7mm;
+      display: grid;
+      grid-template-columns: 49mm 1fr;
+      gap: 4mm;
+      min-height: 32mm
+    }
+
+    .repeat-title {
+      font-family: PlexMono;
+      font-size: 9px;
+      line-height: 1.08;
+      letter-spacing: 1.45px;
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .repeat-copy {
+      font-size: 7.35px;
+      line-height: 1.18;
+      color: var(--soft)
+    }
+
+    .repeat-copy b {
+      color: var(--ink)
+    }
+
+    .condition-flow {
+      margin-top: 1.5mm;
+      display: grid;
+      grid-template-columns: 1fr 12mm 1fr 12mm 1fr;
+      align-items: stretch;
+      gap: 1mm
+    }
+
+    .condition {
+      border-top: 1px solid var(--strong);
+      padding-top: 1mm
+    }
+
+    .condition h3 {
+      font-family: PlexMono;
+      font-size: 6.8px;
+      letter-spacing: .65px;
+      margin-bottom: .7mm;
+      color: var(--ink)
+    }
+
+    .condition p {
+      font-size: 6.5px;
+      line-height: 1.1;
+      color: var(--soft)
+    }
+
+    .condition-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: PlexMono;
+      color: var(--accent);
+      font-size: 10px
+    }
+
+    .condition.optimised {
+      border-top: 1.5px solid var(--accent)
+    }
+
+    .condition.optimised h3 {
+      color: var(--accent)
+    }
+
+    .challenge-grid {
+      margin-top: 1.6mm;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4mm
+    }
+
+    .challenge {
+      border-top: 1px solid var(--line);
+      padding-top: 1.1mm
+    }
+
+    .challenge h3 {
+      font-family: PlexMono;
+      font-size: 6.9px;
+      letter-spacing: .75px;
+      color: var(--accent);
+      margin-bottom: .7mm
+    }
+
+    .challenge p {
+      font-size: 6.55px;
+      line-height: 1.12;
+      color: var(--soft)
+    }
+
+    .process {
+      margin-top: 1.2mm
+    }
+
+    .label {
+      font-size: 7.5px
+    }
+
+    .arrow {
+      margin: 0 1.35mm
+    }
+
+    .tech {
+      margin-top: .8mm
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-left">
+        <div class="proj-number">07</div>
+        <div class="title-stack"><span class="kicker">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span>
+          <h1>CMM Programming</h1>
+          <div class="subtitle">Fixture Validation &amp; Measurement Repeatability</div>
+        </div>
+      </div>
+      <div class="meta-strip">
+        <div class="meta-field"><span class="meta-label">ROLE</span><span class="meta-value">CMM PROGRAMMER</span></div>
+        <div class="meta-field"><span class="meta-label">PROCESS</span><span class="meta-value">CMM INSPECTION</span>
+        </div>
+        <div class="meta-field"><span class="meta-label">SOFTWARE</span><span class="meta-value">ABERLINK 3D</span>
+        </div>
+        <div class="meta-field"><span class="meta-label">FOCUS</span><span class="meta-value">FIXTURE VALIDATION</span>
+        </div>
+      </div>
+    </header>
+    <div class="rule"></div>
+    <section class="hero-grid">
+      <div class="hero-card">
+        <div class="hero-frame"><img src="assets/01_ring_fixture_top.jpg"
+            alt="Precision ring elevated on an Aberlink fixture plate">
+        </div>
+        <div class="hero-caption"><span class="cap-num">01</span><span class="cap-text"><b>CONTROLLED WORKHOLDING</b> -
+            The ring is elevated above the fixture plate so the underside remains accessible while locating points
+            provide controlled restraint.</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-frame"><img src="assets/02_ring_fixture_angle.jpg"
+            alt="Angled view of precision ring and locating pins on fixture plate">
+          
+        </div>
+        <div class="hero-caption"><span class="cap-num">02</span><span class="cap-text"><b>RESTRAINT VS ACCESS</b> -
+            Locator placement must stabilise the workpiece without unnecessarily constraining the circular geometry or
+            obstructing probe access.</span></div>
+      </div>
+    </section>
+    <section class="repeatability">
+      <div class="repeat-title">FIXTURE VALIDATION<br>&amp; MEASUREMENT REPEATABILITY</div>
+      <div class="repeat-copy"><b>The objective was not maximum clamping force.</b> The workholding condition had to
+        prevent movement under probing while avoiding excessive constraint that could alter measured geometry. Repeated
+        loading and measurement trials were used to assess setup behaviour and refine locator positions/restraint before
+        documenting the loading condition for operators.<div class="condition-flow">
+          <div class="condition">
+            <h3>EXCESSIVE CONSTRAINT</h3>
+            <p>Clamping-induced distortion → altered workpiece geometry.</p>
+          </div>
+          <div class="condition-arrow">→</div>
+          <div class="condition optimised">
+            <h3>OPTIMISED CONSTRAINT</h3>
+            <p>Stable workpiece → preserved geometry → repeatable measurement.</p>
+          </div>
+          <div class="condition-arrow">→</div>
+          <div class="condition">
+            <h3>INSUFFICIENT CONSTRAINT</h3>
+            <p>Workpiece slippage under probing force → point-to-point displacement → reduced repeatability.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="challenge-grid">
+      <article class="challenge">
+        <h3>01 / PROBE-INDUCED DISPLACEMENT</h3>
+        <p>When a circular feature is acquired from multiple touch points, the CMM calculates the feature from those
+          coordinates. If the workpiece moves between contacts, the points may no longer represent one stationary
+          physical position.</p>
+      </article>
+      <article class="challenge">
+        <h3>02 / POSITION &amp; CIRCULARITY</h3>
+        <p>For holes with <b>position tolerances</b>, movement can affect the reported feature location relative to the
+          established datum reference frame. <b>Circularity</b> remains a separate form control.</p>
+      </article>
+      <article class="challenge">
+        <h3>03 / CONTROLLED CONTACT</h3>
+        <p>Locator position, contact condition and workpiece elevation were treated as part of the <b>measurement
+            strategy</b>, balancing stability, accessibility and the risk of clamping-induced distortion.</p>
+      </article>
+      <article class="challenge">
+        <h3>04 / SETUP REPRODUCIBILITY</h3>
+        <p>The selected arrangement was documented through <b>photographs and operator instructions</b> so the component
+          could be loaded consistently without claiming perfect repeatability or eliminating all variation.</p>
+      </article>
+    </section>
+    <section class="process"><span class="section-label">PROCESS EXPOSURE</span>
+      <div class="process-flow">
+        <div class="step"><span class="num">01</span><span class="label">Fixture Review</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">02</span><span class="label">Locator Positioning</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">03</span><span class="label">Controlled Loading</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">04</span><span class="label">Repeatability Trial</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">05</span><span class="label">CMM Measurement</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">06</span><span class="label">Fixture Optimisation</span></div><span
+          class="arrow">→</span>
+        <div class="step"><span class="num">07</span><span class="label">Operator Work Instruction</span></div>
+      </div>
+    </section>
+    <section class="tech"><span class="section-label">TECHNICAL EXPOSURE</span>
+      <div class="tech-row"><span class="tech-item primary">CMM Programming</span><span class="tech-item">Fixture
+          Validation</span><span class="tech-item">Workpiece Constraint</span><span class="tech-item">Loading
+          Repeatability</span><span class="tech-item">Probe-Induced Displacement</span><span
+          class="tech-item">Clamping-Induced Distortion</span><span class="tech-item">Datum Stability</span><span
+          class="tech-item">Position Tolerance</span><span class="tech-item">Circularity</span><span
+          class="tech-item">GD&amp;T Verification</span></div>
+    </section>
+    <footer class="footer"><span class="foot">AEROSPACE &amp; PRECISION MANUFACTURING PORTFOLIO</span><span
+        class="foot">PAGE <b>07</b> &nbsp;/&nbsp; CMM–FIXTURE–07</span></footer>
+  </div>
+</body>
+
+</html>
